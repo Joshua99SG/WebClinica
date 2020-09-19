@@ -46,8 +46,8 @@ namespace WebClinica.Models
             modelBuilder.Entity<Medico>(entity =>
             {
                 entity.Property(e => e.MedicoId)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasColumnName("MedicoID")
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.Apellidos)
                     .HasMaxLength(50)
@@ -57,9 +57,8 @@ namespace WebClinica.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Foto)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                entity.Property(e => e.EspecialidadId)
+                .HasColumnName("EspecialidadID");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(50)
@@ -77,8 +76,8 @@ namespace WebClinica.Models
             modelBuilder.Entity<Paciente>(entity =>
             {
                 entity.Property(e => e.PacienteId)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                    .HasColumnName("PacienteId")
+                    .ValueGeneratedNever();
 
                 entity.Property(e => e.Apellidos)
                     .HasMaxLength(50)
