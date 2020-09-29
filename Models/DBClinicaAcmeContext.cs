@@ -16,6 +16,8 @@ namespace WebClinica.Models
         public virtual DbSet<Especialidad> Especialidad { get; set; }
         public virtual DbSet<Medico> Medico { get; set; }
         public virtual DbSet<Paciente> Paciente { get; set; }
+        public virtual DbSet<Citas> Citas { get; set; }
+        public virtual DbSet<Usuario> Usuario { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -57,8 +59,11 @@ namespace WebClinica.Models
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.Property(e => e.EspecialidadId)
-                .HasColumnName("EspecialidadID");
+                entity.HasOne(d => d.Especialidad)
+                    .WithMany(p => p.Medico)
+                    .HasForeignKey(d => d.EspecialidadId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Medico_Especialidad");
 
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(50)
@@ -97,6 +102,79 @@ namespace WebClinica.Models
 
                 entity.Property(e => e.TelefonoContacto)
                     .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Citas>(entity =>
+            {
+                entity.HasKey(e => e.CitaId);
+
+                entity.Property(e => e.CitaId).HasColumnName("CitaID");
+
+                entity.Property(e => e.Diagnostico)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.EspecialidadId).HasColumnName("EspecialidadID");
+
+                entity.Property(e => e.FechaCita)
+                    .HasColumnName("Fecha_Cita")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.MedicoId)
+                    .IsRequired()
+                    .HasColumnName("MedicoID");
+
+                entity.Property(e => e.PacienteId)
+                    .IsRequired()
+                    .HasColumnName("PacienteID");
+
+
+                entity.HasOne(d => d.Medico)
+                    .WithMany(p => p.Citas)
+                    .HasForeignKey(d => d.MedicoId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Citas_Medico");
+
+                entity.HasOne(d => d.Paciente)
+                    .WithMany(p => p.Citas)
+                    .HasForeignKey(d => d.PacienteId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Citas_Paciente");
+            });
+
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.Property(e => e.Apellidos)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Clave)
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Direccion)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nombre)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Telefono)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UsuarioId)
+                    .IsRequired()
+                    .HasColumnName("UsuarioID")
+                    .HasMaxLength(20)
                     .IsUnicode(false);
             });
 

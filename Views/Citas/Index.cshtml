@@ -1,0 +1,94 @@
+﻿@model IEnumerable<WebClinica.Models.Citas>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Content.cshtml";
+}
+
+<head>
+    <title>Citas</title>
+</head>
+<partial name="_Menu"/>
+<div class="container">
+    <main class="pb-3" role="main">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6 col-lg-12">
+                    <h2 class="text-light">Lista de citas</h2>
+                </div>
+            </div>
+            <form asp-controller="Citas" asp-action="Index" method="post" id="frmFilter">
+                <div class="row">
+                    <div class="col-md-2 col-lg-2 text-right">
+                        <partial name="_CreateButtonPartial" />
+                    </div>
+                    <br />
+                    <div class="col-md-2 col-1g-2 text-right">
+                        <partial name="_BackHome" />
+                    </div>
+                </div>
+                <div class="col-md-12" style="color:black;"><hr></div>
+            </form>
+            @if (Model.Count() > 0)
+            {
+                <table class="table table-hover border .table-responsive" id="TbEspecial">
+                    <thead class="thead-dark">
+                        <tr class="table-secondary">
+                            <th>
+                                @Html.DisplayNameFor(model => model.FechaCita)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Diagnostico)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.EspecialidadId)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Medico)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Paciente)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FechaCita)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Diagnostico)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.EspecialidadId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Medico.Apellidos)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Paciente.Apellidos)
+                                </td>
+                                <partial name="_AddEditAndView" model="item.CitaId" />
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h2 style="color:red">No hay medicos en la lista.</h2>
+            }
+        </div>
+        <form asp-action="Delete" asp-controller="Citas" method="post" id="viewEliminarCita">
+            <input type="hidden" id="txtCitaId" name="CitaId" />
+        </form>
+        <form asp-action="Edit" asp-controller="Citas" method="post" id="viewEditar">
+            <input type="hidden" id="txtCitaId" name="CitaId" />
+        </form>
+    </main>
+</div>
+<partial name="_EndPag" />
+

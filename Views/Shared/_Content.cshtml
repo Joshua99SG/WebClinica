@@ -18,12 +18,13 @@
 
     <!-- MAIN CSS -->
     <link rel="stylesheet" href="~/css/tooplate-style.css" asp-append-version="true">
+    <link href="~/css/Paginador.css" rel="stylesheet" asp-append-version="true"/>
     <link href="~/css/especializado.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
     <script type="text/javascript"
             src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-                @RenderBody()
+    @RenderBody()
     <script src="~/js/jquery.js" asp-append-version="true"></script>
     <script src="~/js/bootstrap.min.js" asp-append-version="true"></script>
     <script src="~/js/jquery.sticky.js" asp-append-version="true"></script>
@@ -36,6 +37,7 @@
     <script src="~/js/especializado.js" asp-append-version="true"></script>
     <script src="~/js/Utilitarios.js" asp-append-version="true"></script>
     <script src="~/js/sweetalert2.js" asp-append-version="true"></script>
+    <script src="~/js/Paginador.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
