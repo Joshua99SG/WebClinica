@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Clinica.Models;
+using WebClinica.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using WebClinica.Models;
 using WebClinica.Models.ViewModel;
 
 namespace WebClinica.Controllers
@@ -66,8 +65,9 @@ namespace WebClinica.Controllers
                             select new SelectListItem
                             {
                                 Text = medico.Apellidos + ", " + medico.Nombre
-                                            + " - " + especialidad.Nombre + ", " +
-                                medico.MedicoId
+                                            + " - " + especialidad.Nombre
+                                +", " +  medico.MedicoId 
+                            
                             }
                                    ).ToList();
             ViewBag.ListaMedicos = listaMedicos;
@@ -77,7 +77,7 @@ namespace WebClinica.Controllers
         {
             cargarMedicos();
             determinarUltimoRegistro();
-            if (PacienteId != null)
+            if (PacienteId != 0)
             {
                 BuscarPaciente(PacienteId);
             }

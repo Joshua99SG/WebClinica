@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Clinica.Models;
-using Microsoft.AspNetCore.Mvc;
 using WebClinica.Models;
+using Microsoft.AspNetCore.Mvc;
 using WebClinica.Models.ViewModel;
+using Clinica.Models;
 
 namespace WebClinica.Controllers
 {
@@ -19,6 +19,7 @@ namespace WebClinica.Controllers
         {
             _db = db;
         }
+
         public IActionResult Index(DateTime FechaInicio, DateTime FechaFinal)
         {
             String _FechaInicio = FechaInicio.ToString("dd-MM-yyyy");
@@ -87,6 +88,7 @@ namespace WebClinica.Controllers
             lista = listaCitas;
             return View(listaCitas);
         }
+
         //metodo que descarga el archivo excel
         public FileResult exportarExcel()
         {

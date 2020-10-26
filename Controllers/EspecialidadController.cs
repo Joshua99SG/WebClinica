@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Clinica.Models;
+using Microsoft.AspNetCore.Mvc;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +17,7 @@ namespace WebClinica.Controllers
         {
             _db = db;
         }
+
         public IActionResult Index()
         {
             listaEspecialidad = (from especialidad in _db.Especialidad
@@ -26,13 +30,27 @@ namespace WebClinica.Controllers
             var model = listaEspecialidad;
             return View("Index", model);
         }
+
+        private void cargarUltimoRegistro()
+        {
+            var ultimoRegistro = _db.Set<Especialidad>().OrderByDescending(e => e.EspecialidadId).FirstOrDefault();
+            if (ultimoRegistro == null)
+            {
+                ViewBag.ID = 1;
+            }
+            else
+            {
+                ViewBag.ID = ultimoRegistro.EspecialidadId + 1;
+            }
+        }
+
         [HttpGet]
         public IActionResult Create()
         {
-            var ultimoRegistro = _db.Set<Especialidad>().OrderByDescending(e => e.EspecialidadId).FirstOrDefault();
-            ViewBag.ID = ultimoRegistro.EspecialidadId + 1;
+            cargarUltimoRegistro();
             return View();
         }
+
         [HttpPost]
         public IActionResult Create(Especialidad especialidad)
         {
@@ -111,6 +129,26 @@ namespace WebClinica.Controllers
                 Error = ex.Message;
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public FileResult exportarExcel()
+        {
+            Utilitarios util = new Utilitarios();
+            string[] cabeceras = { "Especialidad", "Nombre", "Descripcion" };
+            string[] nombrePropiedades = { "EspecialidadId", "Nombre", "Descripcion" };
+            byte[] buffer = util.generarExcel(cabeceras, nombrePropiedades, listaEspecialidad);
+            //content type mime xlsx google
+            return File(buffer, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
+
+        public FileResult exportarPDF()
+        {
+            Utilitarios util = new Utilitarios();
+            string[] cabeceras = { "Especialidad", "Nombre", "Descripcion" };
+            string[] nombrePropiedades = { "EspecialidadId", "Nombre", "Descripcion" };
+            string titulo = "Reporte de Especialidad";
+            byte[] buffer = util.ExportarPDFDatos(nombrePropiedades, listaEspecialidad, titulo);
+            return File(buffer, "application/pdf");
         }
     }
 }

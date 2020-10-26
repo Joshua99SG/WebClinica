@@ -1,5 +1,26 @@
 ﻿
 /*--------------------MODALES CREAR--------------------*/
+
+function abrirModalCrearEnfermedad() {
+    verModal('Agregar enfermedad', '¿Desea guardar la enfermedad?').then((result) => {
+        if (result.value) {
+            var viewAgregar = document.getElementById("viewAgregar");
+            viewAgregar.submit();
+            Swal.fire(
+                'Agregado!',
+                'La enfermedad fue agregado!.',
+                'success'
+            )
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelado',
+                'La enfermedad no fue agregada!!!:)',
+                'error'
+            )
+        }
+    })
+}
 function abrirModalCrearEspecialidad() {
     verModal('Agregar especialidad', '¿Desea guardar la especialidad?').then((result) => {
         if (result.value) {
@@ -20,7 +41,7 @@ function abrirModalCrearEspecialidad() {
         }
     })
 }
-function abrirModalCrearMedico() {
+const abrirModalCrearMedico = () => {
     verModal('Agregar medico', '¿Desea guardar al medico?').then((result) => {
         if (result.value) {
             var viewAgregar = document.getElementById("viewAgregar");
@@ -60,14 +81,55 @@ function abrirModalCrearPaciente() {
         }
     })
 }
+
 /*------------------------------------------------------*/
 /*--------------------MODALES EDITAR--------------------*/
 
+function abrirModalEditarCita() {
+    verModal('Modificar cita', '¿Desea modificar la cita?').then((result) => {
+        if (result.value) {
+            var viewEditarCita = document.getElementById("viewEditarCita");
+            viewEditarCita.submit();
+            Swal.fire(
+                'Modificado!',
+                'La cita fue modificado!.',
+                'success'
+            )
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelado',
+                'La cita no fue modificado!!!:)',
+                'error'
+            )
+        }
+    })
+}
+function abrirModalEditarEnfermedad() {
+    verModal('Modificar enfermedad', '¿Desea modificar la enfermedad?').then((result) => {
+        if (result.value) {
+            var viewEditarEnfermedad = document.getElementById("viewEditarEnfermedad");
+            viewEditarEnfermedad.submit();
+            Swal.fire(
+                'Modificada!',
+                'La enfermedad fue modificada!.',
+                'success'
+            )
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelado',
+                'La enfermedad no fue modificada!!!:)',
+                'error'
+            )
+        }
+    })
+}
 function abrirModalEditarEspecialidad() {
     verModal('Modificar especialidad', '¿Desea modificar la especialidad?').then((result) => {
         if (result.value) {
-            var viewEditar = document.getElementById("viewEditar");
-            viewEditar.submit();
+            var viewEditarEspecialidad = document.getElementById("viewEditarEspecialidad");
+            viewEditarEspecialidad.submit();
             Swal.fire(
                 'Modificado!',
                 'La especialidad fue modificada!.',
@@ -83,12 +145,11 @@ function abrirModalEditarEspecialidad() {
         }
     })
 }
-
 function abrirModalEditarMedico() {
     verModal('Modificar medico', '¿Desea modificar el medico?').then((result) => {
         if (result.value) {
-            var viewEditar = document.getElementById("viewEditar");
-            viewEditar.submit();
+            var viewEditarMedico = document.getElementById("viewEditarMedico");
+            viewEditarMedico.submit();
             Swal.fire(
                 'Modificado!',
                 'El medico fue modificado!.',
@@ -104,12 +165,11 @@ function abrirModalEditarMedico() {
         }
     })
 }
-
 function abrirModalEditarPaciente() {
     verModal('Modificar paciente', '¿Desea modificar el paciente?').then((result) => {
         if (result.value) {
-            var viewEditar = document.getElementById("viewEditar");
-            viewEditar.submit();
+            var viewEditarPaciente = document.getElementById("viewEditarPaciente");
+            viewEditarPaciente.submit();
             Swal.fire(
                 'Modificado!',
                 'El paciente fue modificado!.',
@@ -126,36 +186,63 @@ function abrirModalEditarPaciente() {
     })
 }
 
-function abrirModalEditarCita() {
-    verModal('Modificar cita', '¿Desea modificar la cita?').then((result) => {
-        if (result.value) {
-            var viewEditar = document.getElementById("viewEditar");
-            viewEditar.submit();
-            Swal.fire(
-                'Modificado!',
-                'La cita fue modificado!.',
-                'success'
-            )
-        }
-        else if (result.dismiss === Swal.DismissReason.cancel) {
-            Swal.fire(
-                'Cancelado',
-                'La cita no fue modificado!!!:)',
-                'error'
-            )
-        }
-    })
-}
 /*--------------------MODALES EDITAR-----------------------*/
 /*--------------------METODOS ELIMINAR--------------------*/
+function EliminarCita(CitaId) {
+    document.getElementById("txtCitaId").value = CitaId;
+    verModal('Eliminar cita',
+        '¿Desea eliminar la cita con el código '
+        + CitaId + '?').then((result) => {
+            if (result.value) {
+                var viewEliminarCita = document.getElementById("viewEliminarCita");
+                viewEliminarCita.submit();
+                Swal.fire(
+                    'Eliminación!',
+                    'La cita' + CitaId + 'fue eliminada!.',
+                    'success'
+                )
+            }
+            else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelado',
+                    'La cita no fue eliminada!!!:)',
+                    'error'
+                )
+            }
+        })
+}
+
+function EliminarEnfermedad(EnfermedadId) {
+    document.getElementById("txtEnfermedadId").value = EnfermedadId;
+    verModal('Eliminar enfermedad',
+        '¿Desea eliminar la enfermedad con el código '
+        + EnfermedadId + '?').then((result) => {
+            if (result.value) {
+                var viewEliminarEnfermedad = document.getElementById("viewEliminarEnfermedad");
+                viewEliminarEnfermedad.submit();
+                Swal.fire(
+                    'Eliminación!',
+                    'La enfermedad' + EnfermedadId + 'fue eliminada!.',
+                    'success'
+                )
+            }
+            else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelado',
+                    'La enfermedad no fue eliminada!!!:)',
+                    'error'
+                )
+            }
+        })
+}
 function EliminarEspecialidad(EspecialidadId) {
     document.getElementById("txtEspecialidadId").value = EspecialidadId;
     verModal('Eliminar especialidad',
         '¿Desea eliminar la especialidad código '
         + EspecialidadId + '?').then((result) => {
             if (result.value) {
-                var viewEliminar = document.getElementById("viewEliminarEspecialidad");
-                viewEliminar.submit();
+                var viewEliminarEspecialidad = document.getElementById("viewEliminarEspecialidad");
+                viewEliminarEspecialidad.submit();
                 Swal.fire(
                     'Eliminación!',
                     'La especialidad' + EspecialidadId + 'fue eliminada!.',
@@ -171,15 +258,14 @@ function EliminarEspecialidad(EspecialidadId) {
             }
         })
 }
-
 function EliminarMedico(MedicoId) {
     document.getElementById("txtMedicoId").value = MedicoId;
     verModal('Eliminar medico',
-        '¿Desea eliminar el medico de código '
-        + MedicoId + '?').then((result) => {
+        '¿Desea eliminar el medico de código  '
+        + ' ' + MedicoId + ' ?').then((result) => {
             if (result.value) {
-                var viewEliminar = document.getElementById("viewEliminarMedico");
-                viewEliminar.submit();
+                var viewEliminarMedico = document.getElementById("viewEliminarMedico");
+                viewEliminarMedico.submit();
                 Swal.fire(
                     'Eliminación!',
                     'El medico' + MedicoId + 'fue eliminado!.',
@@ -195,15 +281,14 @@ function EliminarMedico(MedicoId) {
             }
         })
 }
-
 function EliminarPaciente(PacienteId) {
     document.getElementById("txtPacienteId").value = PacienteId;
     verModal('Eliminar paciente',
         '¿Desea eliminar el paciente código '
         + PacienteId + '?').then((result) => {
             if (result.value) {
-                var viewEliminar = document.getElementById("viewEliminarPaciente");
-                viewEliminar.submit();
+                var viewEliminarPaciente = document.getElementById("viewEliminarPaciente");
+                viewEliminarPaciente.submit();
                 Swal.fire(
                     'Eliminación!',
                     'El paciente' + PacienteId + 'fue eliminado!.',
@@ -220,34 +305,32 @@ function EliminarPaciente(PacienteId) {
         })
 }
 
-function EliminarCita(CitaId) {
-    document.getElementById("txtCitaId").value = CitaId;
-    verModal('Eliminar cita',
-        '¿Desea eliminar la cita con el código '
-        + CitaId + '?').then((result) => {
-            if (result.value) {
-                var viewEliminar = document.getElementById("viewEliminarCita");
-                viewEliminar.submit();
-                Swal.fire(
-                    'Eliminación!',
-                    'La cita' + CitaId + 'fue eliminada!.',
-                    'success'
-                )
-            }
-            else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire(
-                    'Cancelado',
-                    'La cita no fue eliminada!!!:)',
-                    'error'
-                )
-            }
-        })
-}
 /*--------------------METODOS ELIMINAR--------------------*/
-/*--------------------METODOS GLOBALES--------------------*/
-
-
-function agregar() {
+/*---------------------METODOS BUSCAR---------------------*/
+function BuscarEnfermedad() {
+    var nombre = document.getElementById("nombre").value;
+    var url = "ConsultaEnfermedad/BuscarEnfermedad/?nombreEnfermedad=" + nombre;
+    var tbody = document.getElementById("tbDatos");
+    var campos = new Array("nombre", "descripcion");
+    pintarPantallaConsulta(url, campos, tbody);
+}
+function BuscarEspecialidad() {
+    var nombre = document.getElementById("nombre").value;
+    var url = "ConsultaEspecialidad/BuscarEspecialidad/?nombreEspecialidad=" + nombre;
+    var tbody = document.getElementsByClassName("tbDatos");
+    var campos = new Array("nombre", "descripcion");
+    pintarPantallaConsulta(url, campos, tbody);
+}
+function BuscarMedico() {
+    var nombre = document.getElementById("nombre").value;
+    var url = "ConsultaMedico/BuscarMedico/?nombreMedico=" + nombre;
+    var tbody = document.getElementsByClassName("tbDatos");
+    var campos = new Array("Nombre", "Apellidos", "Direccion", "Telefono Fijo", "Telefono Celular", "Foto", "especialidadId");
+    pintarPantallaConsulta(url, campos, tbody);
+}
+/*---------------------METODOS BUSCAR---------------------*/
+/*----------------METODOS GLOBALES MODALES----------------*/
+function Agregar() {
     let titulo = document.title;
     if (titulo == "Agregar especialidad") {
         abrirModalCrearEspecialidad();
@@ -257,12 +340,16 @@ function agregar() {
         } else {
             if (titulo == "Agregar paciente") {
                 abrirModalCrearPaciente();
+            } else {
+                if (titulo == "Agregar enfermedad") {
+                    abrirModalCrearEnfermedad();
+                }
             }
         }
     }
 }
 
-function editar() {
+function Editar() {
     let titulo = document.title;
     if (titulo == "Editar especialidad") {
         abrirModalEditarEspecialidad();
@@ -272,12 +359,16 @@ function editar() {
         } else {
             if (titulo == "Editar paciente") {
                 abrirModalEditarPaciente();
+            } else {
+                if (titulo == "Editar enfermedad") {
+                    abrirModalEditarEnfermedad();
+                }
             }
         }
     }
 }
 
-function eliminar(id) {
+function Eliminar(id) {
     let titulo = document.title;
     if (titulo == "Especialidad") {
         EliminarEspecialidad(id);
@@ -287,9 +378,50 @@ function eliminar(id) {
         } else {
             if (titulo == "Paciente") {
                 EliminarPaciente(id);
+            } else {
+                if (titulo == "Enfermedad") {
+                    EliminarEnfermedad(id);
+                } else {
+                    if (titulo == "Citas") {
+                        EliminarCita(id);
+                    }
+                }
             }
         }
     }
+}
+
+function Buscar() {
+    let titulo = document.title;
+    if (titulo == "Consulta Enfermedad") {
+        BuscarEnfermedad();
+    } else {
+        if (titulo == "Consulta Especialidad") {
+            BuscarEspecialidad();
+        } else {
+            if (titulo == "Consulta Medico") {
+                BuscarMedico();
+            } else {
+                if (titulo == "") {
+                   
+                }
+            }
+        }
+    }
+}
+
+/*----------------METODOS GLOBALES MODALES----------------*/
+function Resetear() {
+    document.getElementById("nombre").value = "";
+    Buscar();
+}
+function ExportarPDF() {
+    var aux = document.getElementById("viewExportarPDF");
+    aux.submit();
+}
+function ExportarExcel() {
+    var aux = document.getElementById("viewExportarExcel");
+    aux.submit();
 }
 
 $(document).ready(function () {

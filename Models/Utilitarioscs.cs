@@ -17,6 +17,8 @@ using iText.Svg.Renderers.Impl;
 using iText.IO.Image;
 using iText.Layout.Properties;
 using OfficeOpenXml;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Clinica.Models
 {
@@ -28,7 +30,6 @@ namespace Clinica.Models
             {
                 //No crear pdf
             }
-
             using (MemoryStream ms = new MemoryStream())
             {
                 Dictionary<string, string> diccionario =
@@ -49,7 +50,7 @@ namespace Clinica.Models
                     p1.SetFontSize(20);
                     p1.SetTextAlignment(iText.Layout.Properties.TextAlignment.CENTER);
                     Image img = new Image(ImageDataFactory
-                   .Create(@"D:\Clinica\wwwroot\img\ClinicaAcme.png"))
+                   .Create(@"E:\XPC\Desktop\Proyectos\Proyectos\WebClinica\wwwroot\images\ClinicaAcme.png"))
                    .SetTextAlignment(TextAlignment.LEFT);
 
                     doc.Add(img);
@@ -115,6 +116,48 @@ namespace Clinica.Models
                 }
             }
         }
+        static string key { get; set; } = "A!9HHhi%XjjYY4YP2@Nob009X";
+        public static string CifrarDatos(string data)
+        {
+            using (var md5 = new MD5CryptoServiceProvider())
+            {
+                using (var tdes = new TripleDESCryptoServiceProvider())
+                {
+                    tdes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(key));
+                    tdes.Mode = CipherMode.ECB;
+                    tdes.Padding = PaddingMode.PKCS7;
+
+                    using (var transform = tdes.CreateEncryptor())
+                    {
+                        byte[] textBytes = UTF8Encoding.UTF8.GetBytes(data);
+                        byte[] bytes = transform.TransformFinalBlock(textBytes, 0, textBytes.Length);
+                        return Convert.ToBase64String(bytes, 0, bytes.Length);
+                    }
+                }
+            }
+        }
+
+
+        public static string DescifrarDatos(string data)
+        {
+            using (var md5 = new MD5CryptoServiceProvider())
+            {
+                using (var tdes = new TripleDESCryptoServiceProvider())
+                {
+                    tdes.Key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(key));
+                    tdes.Mode = CipherMode.ECB;
+                    tdes.Padding = PaddingMode.PKCS7;
+
+                    using (var transform = tdes.CreateDecryptor())
+                    {
+                        byte[] cipherBytes = Convert.FromBase64String(data);
+                        byte[] bytes = transform.TransformFinalBlock(cipherBytes, 0, cipherBytes.Length);
+                        return UTF8Encoding.UTF8.GetString(bytes);
+                    }
+                }
+            }
+        }
     }
 }
+
 

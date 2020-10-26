@@ -8,13 +8,13 @@ using WebClinica.Models;
 
 namespace WebClinica.Controllers
 {
-    public class ConsultaEspecialidadesController : Controller
+    public class ConsultaEspecialidadController : Controller
     {
         private readonly DBClinicaAcmeContext _db;
 
         static List<Especialidad> lista = new List<Especialidad>();
 
-        public ConsultaEspecialidadesController(DBClinicaAcmeContext db)
+        public ConsultaEspecialidadController(DBClinicaAcmeContext db)
         {
             _db = db;
         }
@@ -71,7 +71,7 @@ namespace WebClinica.Controllers
             Utilitarios util = new Utilitarios();
             string[] cabeceras = { "Especialidad", "Nombre", "Descripcion" };
             string[] nombrePropiedades = { "EspecialidadId", "Nombre", "Descripcion" };
-            string titulo = "Reporte de Especialidades";
+            string titulo = "Reporte de Especialidad";
             byte[] buffer = util.ExportarPDFDatos(nombrePropiedades, lista, titulo);
             return File(buffer, "application/pdf");
         }

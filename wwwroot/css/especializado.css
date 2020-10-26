@@ -54,15 +54,7 @@
         background-color: #4267b2;
     }
 
-.contenedorEspecialidad {
-    display: flex;
-}
-
-.contenedorMedico{
-    display: flex;
-}
-
-.contenedorPaciente{
+.contenedorBotonesPrincipalesIndex{
     display: flex;
 }
 
@@ -100,3 +92,16 @@
     .boton-edit:hover {
         background-color: rgba(199, 199, 199, 1);
     }
+
+.contenedorTablas {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-top:20px;
+}
+
+.trs {
+    background-color: #111110;
+    color: white;
+}

@@ -24,7 +24,7 @@ namespace WebClinica.Controllers
                                  Apellidos = paciente.Apellidos,
                                  Direccion = paciente.Direccion,
                                  TelefonoContacto = paciente.TelefonoContacto,
-                                 Foto = paciente.Foto
+                                 Email = paciente.Email
                              }).ToList();
             var model = listaPaciente;
             return View("Index", model);
@@ -32,7 +32,14 @@ namespace WebClinica.Controllers
         public IActionResult Create()
         {
             var ultimoRegistro = _db.Set<Paciente>().OrderByDescending(e => e.PacienteId).FirstOrDefault();
-            ViewBag.ID = ultimoRegistro.PacienteId + 1;
+            if (ultimoRegistro == null)
+            {
+                ViewBag.ID = 1;
+            }
+            else
+            {
+                ViewBag.ID = ultimoRegistro.PacienteId + 1;
+            }
             return View();
         }
         [HttpPost]

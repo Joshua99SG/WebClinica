@@ -49,7 +49,15 @@
                         Mantenimiento
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navabarDropDownMenuLink">
-                        <a class="dropdown-item" asp-action="Index" asp-controller="Especialidad">
+                        <a class="dropdown-item" asp-controller="Citas" asp-action="Index">
+                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Citas
+                        </a>
+                        <br />
+                        <a class="dropdown-item" asp-controller="Enfermedad" asp-action="Index">
+                            <i class="fa fa-folder-open" aria-hidden="true"></i> Enfermedad
+                        </a>
+                        <br />
+                        <a class="dropdown-item" asp-controller="Especialidad" asp-action="Index">
                             <i class="fa fa-stethoscope" aria-hidden="true"></i> Especialidades
                         </a>
                         <br />
@@ -61,9 +69,46 @@
                             <i class="fa fa-heartbeat" aria-hidden="true"></i> Pacientes
                         </a>
                         <br />
+                        <a class="dropdown-item" asp-controller="Usuario" asp-action="Index">
+                            <i class="fa fa-female" aria-hidden="true"></i> Usuarios
+                        </a>
+                        <br />
                     </div>
                 </li>
-                <li class="appointment-btn"><a href="#appointment">Haga su cita</a></li>
+                <li class="nav-item dropdown text-white-50" onmouseover="">
+                    <a class="nav-link dropdown-toggle" id="NavBar1"
+                       role="button" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Consultas
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navabarDropDownMenuLink">
+                        <a class="dropdown-item" asp-controller="ConsultaEspecialidad" asp-action="Index">
+                            <i class="fa fa-stethoscope" aria-hidden="true"></i> Especialidades
+                        </a>
+                        <br />
+                        <a class="dropdown-item" asp-controller="ConsultaMedico" asp-action="Index">
+                            <i class="fa fa-medkit" aria-hidden="true"></i> Médicos
+                        </a>
+                        <br />
+                        <a class="dropdown-item" asp-controller="ConsultaPaciente" asp-action="Index">
+                            <i class="fa fa-heartbeat" aria-hidden="true"></i> Pacientes
+                        </a>
+                        <br />
+                        <a class="dropdown-item" asp-controller="ConsultaCitas" asp-action="Index">
+                            <i class="fa fa-calendar-check-o" aria-hidden="true"></i> Citas
+                        </a>
+                        <br />
+                        <a class="dropdown-item" asp-controller="ConsultaUsuario" asp-action="Index">
+                            <i class="fa fa-female" aria-hidden="true"></i> Usuarios
+                        </a>
+                        <br />
+                        <a class="dropdown-item" asp-controller="ConsultaEnfermedad" asp-action="Index">
+                            <i class="fa fa-folder-open" aria-hidden="true"></i> Enfermedad
+                        </a>
+                        <br />
+                    </div>
+                </li>
+                <li class="appointment-btn"><a asp-controller="Citas" asp-action="Index">Haga su cita</a></li>
             </ul>
         </div>
     </div>
