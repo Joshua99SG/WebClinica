@@ -41,11 +41,11 @@ function abrirModalCrearEspecialidad() {
         }
     })
 }
-const abrirModalCrearMedico = () => {
+function abrirModalCrearMedico() {
     verModal('Agregar medico', '¿Desea guardar al medico?').then((result) => {
         if (result.value) {
-            var viewAgregar = document.getElementById("viewAgregar");
-            viewAgregar.submit();
+            var viewAgregarMedico = document.getElementById("viewAgregarMedico");
+            viewAgregarMedico.submit();
             Swal.fire(
                 'Agregado!',
                 'El medico fue agregado!.',
@@ -76,6 +76,26 @@ function abrirModalCrearPaciente() {
             Swal.fire(
                 'Cancelado',
                 'El paciente no fue agregad!!!:)',
+                'error'
+            )
+        }
+    })
+}
+function abrirModalCrearUsuario() {
+    verModal('Agregar usuario', '¿Desea guardar al usuario?').then((result) => {
+        if (result.value) {
+            var viewAgregarUsuario = document.getElementById("viewAgregarUsuario");
+            viewAgregarUsuario.submit();
+            Swal.fire(
+                'Agregado!',
+                'El usuario fue agregado!.',
+                'success'
+            )
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelado',
+                'El usuario no fue agregado!!!:)',
                 'error'
             )
         }
@@ -304,6 +324,29 @@ function EliminarPaciente(PacienteId) {
             }
         })
 }
+function EliminarUsuario(UsuarioId) {
+    document.getElementById("txtUsuarioId").value = UsuarioId;
+    verModal('Eliminar paciente',
+        '¿Desea eliminar el usuario código '
+        + UsuarioId + '?').then((result) => {
+            if (result.value) {
+                var viewEliminarUsuario = document.getElementById("viewEliminarUsuario");
+                viewEliminarUsuario.submit();
+                Swal.fire(
+                    'Eliminación!',
+                    'El usuario' + UsuarioId + 'fue eliminado!.',
+                    'success'
+                )
+            }
+            else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelado',
+                    'El usuario no fue eliminada!!!:)',
+                    'error'
+                )
+            }
+        })
+}
 
 /*--------------------METODOS ELIMINAR--------------------*/
 /*---------------------METODOS BUSCAR---------------------*/
@@ -343,6 +386,10 @@ function Agregar() {
             } else {
                 if (titulo == "Agregar enfermedad") {
                     abrirModalCrearEnfermedad();
+                } else {
+                    if (titulo == "Agregar usuario") {
+                        abrirModalCrearUsuario();
+                    }
                 }
             }
         }
@@ -384,6 +431,10 @@ function Eliminar(id) {
                 } else {
                     if (titulo == "Citas") {
                         EliminarCita(id);
+                    } else {
+                        if (titulo == "Usuario") {
+                            EliminarUsuario(id);
+                        }
                     }
                 }
             }
