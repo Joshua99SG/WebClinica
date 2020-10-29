@@ -205,6 +205,26 @@ function abrirModalEditarPaciente() {
         }
     })
 }
+function abrirModalEditarUsuario() {
+    verModal('Modificar usuario', '¿Desea modificar el usuario?').then((result) => {
+        if (result.value) {
+            var viewEditarUsuario = document.getElementById("viewEditarUsuario");
+            viewEditarUsuario.submit();
+            Swal.fire(
+                'Modificado!',
+                'El usuario fue modificado!.',
+                'success'
+            )
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelado',
+                'El usuario no fue modificado!!!:)',
+                'error'
+            )
+        }
+    })
+}
 
 /*--------------------MODALES EDITAR-----------------------*/
 /*--------------------METODOS ELIMINAR--------------------*/
@@ -409,6 +429,10 @@ function Editar() {
             } else {
                 if (titulo == "Editar enfermedad") {
                     abrirModalEditarEnfermedad();
+                } else {
+                    if (titulo == "Editar usuario") {
+                        abrirModalEditarUsuario();
+                    }
                 }
             }
         }
