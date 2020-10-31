@@ -102,6 +102,27 @@ function abrirModalCrearUsuario() {
     })
 }
 
+function abrirModalCrearCita() {
+    verModal('Agregar cita', '¿Desea guardar la cita?').then((result) => {
+        if (result.value) {
+            var viewAgregarCita = document.getElementById("viewAgregarCita");
+            viewAgregarCita.submit();
+            Swal.fire(
+                'Agregado!',
+                'La cita fue agregado!.',
+                'success'
+            )
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelado',
+                'La cita no fue agregada!!!:)',
+                'error'
+            )
+        }
+    })
+}
+
 /*------------------------------------------------------*/
 /*--------------------MODALES EDITAR--------------------*/
 
@@ -409,6 +430,10 @@ function Agregar() {
                 } else {
                     if (titulo == "Agregar usuario") {
                         abrirModalCrearUsuario();
+                    } else {
+                        if (titulo == "Agregar citas") {
+                            abrirModalCrearCita();
+                        }
                     }
                 }
             }
@@ -432,6 +457,10 @@ function Editar() {
                 } else {
                     if (titulo == "Editar usuario") {
                         abrirModalEditarUsuario();
+                    } else {
+                        if (titulo == "Editar cita") {
+                            abrirModalEditarCita();
+                        }
                     }
                 }
             }

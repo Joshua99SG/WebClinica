@@ -38,5 +38,7 @@ namespace WebClinica.Models.ViewModel
         public string NombreEspecialidad { get; set; }
 
         public int SelectedOption { get; set; }
+
+        public IEnumerable<SelectListItem> Lista { get; set; }
     }
 }

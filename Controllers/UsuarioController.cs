@@ -15,6 +15,7 @@ namespace WebClinica.Controllers
         private readonly DBClinicaAcmeContext _db;
         List<UsuarioTipoUsuario> listaUsuario = new List<UsuarioTipoUsuario>();
         List<Usuario> lista = new List<Usuario>();
+
         public UsuarioController(DBClinicaAcmeContext db)
         {
             _db = db;
@@ -81,8 +82,6 @@ namespace WebClinica.Controllers
             listaUsuario = listarUsuarios();
             return View(listaUsuario);
         }
-
-        
 
         [HttpGet]
         public IActionResult Create()
