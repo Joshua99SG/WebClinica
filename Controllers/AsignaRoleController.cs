@@ -56,10 +56,12 @@ namespace WebClinica.Controllers
                             if (ncantidad == 0)
                             {
                                 //idpagina 1
-                                TipoUsuarioPaginaBoton oTipoUsuarioPagina = new TipoUsuarioPaginaBoton();
-                                oTipoUsuarioPagina.TipoUsuarioPaginaId = id;
-                                oTipoUsuarioPagina.BotonId = num;
-                                oTipoUsuarioPagina.BotonHabilitado = 1;
+                                TipoUsuarioPaginaBoton oTipoUsuarioPagina = new TipoUsuarioPaginaBoton
+                                {
+                                    TipoUsuarioPaginaId = id,
+                                    BotonId = num,
+                                    BotonHabilitado = 1
+                                };
                                 _db.TipoUsuarioPaginaBoton.Add(oTipoUsuarioPagina);
                             }
                             else

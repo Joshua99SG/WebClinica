@@ -76,10 +76,13 @@ namespace WebClinica.Controllers
             {
                 foreach (var item in _Paginas)
                 {
-                    TipoUsuarioPagina _TipoUsuarioPagina = new TipoUsuarioPagina();
-                    _TipoUsuarioPagina.TipoUsuarioId = tipousuarioid;
-                    _TipoUsuarioPagina.PaginaId = item;
-                    _TipoUsuarioPagina.BotonHabilitado = 1;
+                    TipoUsuarioPagina _TipoUsuarioPagina = new TipoUsuarioPagina
+                    {
+                        TipoUsuarioId = tipousuarioid,
+                        PaginaId = item,
+                        BotonHabilitado = 1
+                    };
+
                     _db.TipoUsuarioPagina.Add(_TipoUsuarioPagina);
                 }
                 _db.SaveChanges();

@@ -193,13 +193,15 @@ namespace WebClinica.Controllers
                 else
                 {
                     CargarUltimoRegistro();
-                    Citas _citas = new Citas();
-                    _citas.CitaId = ViewBag.ID;
-                    _citas.EspecialidadId = citas.EspecialidadId;
-                    _citas.MedicoId = citas.MedicoId;
-                    _citas.PacienteId = citas.PacienteId;
-                    _citas.FechaCita = citas.FechaCita;
-                    _citas.Diagnostico = citas.Diagnostico;
+                    Citas _citas = new Citas()
+                    {
+                        CitaId = ViewBag.ID,
+                        EspecialidadId = citas.EspecialidadId,
+                        MedicoId = citas.MedicoId,
+                        PacienteId = citas.PacienteId,
+                        FechaCita = citas.FechaCita,
+                        Diagnostico = citas.Diagnostico
+                    };
                     _db.Citas.Add(_citas);
                     _db.SaveChanges();
                 }
@@ -256,14 +258,16 @@ namespace WebClinica.Controllers
                 }
                 else
                 {
-                    Citas _cita = new Citas();
-                    _cita.CitaId = cita.CitaId;
-                    _cita.PacienteId = cita.PacienteId;
-                    _cita.MedicoId = cita.MedicoId;
-                    _cita.FechaCita = cita.FechaCita;
-                    _cita.Diagnostico = cita.Diagnostico;
-                    _cita.EspecialidadId = buscarEspecialidad(cita.MedicoId);
-                    _db.Citas.Update(_cita);
+                    Citas _citas = new Citas()
+                    {
+                        CitaId = ViewBag.ID,
+                        PacienteId = cita.PacienteId,
+                        MedicoId = cita.MedicoId,
+                        EspecialidadId = buscarEspecialidad(cita.MedicoId),
+                        FechaCita = cita.FechaCita,
+                        Diagnostico = cita.Diagnostico
+                    };
+                    _db.Citas.Update(_citas);
                     _db.SaveChanges();
                 }
             }
