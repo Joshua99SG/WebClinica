@@ -1,4 +1,47 @@
-﻿
+﻿/*--------------------LOGIN--------------------*/
+function Enviar() {
+    var user = document.getElementById("name").value;
+    var pass = document.getElementById("password").value;
+    $.ajax({
+        type: "GET",
+        url: "/Login/_Login",
+        data: { "user": user, "pass": pass },
+        success: function (data) {
+            if (data == "") {
+                error("Usuario o contaseña incorrecto!");
+            } else {
+                document.location.href = "/Home/Index"
+            }
+        },
+        error: "Esta mierda no sirve"
+    })
+};
+
+var button = document.getElementById('mainButton');
+
+var openForm = function () {
+    button.className = 'active';
+};
+
+var checkInput = function (input) {
+    if (input.value.length > 0) {
+        input.className = 'active';
+    } else {
+        input.className = '';
+    }
+};
+
+var closeForm = function () {
+    button.className = '';
+};
+
+document.addEventListener("keyup", function (e) {
+    if (e.keyCode == 27 || e.keyCode == 13) {
+        closeForm();
+    }
+});
+/*------------------------LOGIN-------------------------*/
+
 /*--------------------MODALES CREAR--------------------*/
 
 function abrirModalCrearEnfermedad() {

@@ -1,21 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace Clinica.Models
+namespace WebClinica.Models.ViewModel
 {
-    public partial class TipoUsuarioPagina
+    public class TipoUsuarioPagina
     {
-        [DisplayName("Tipo usuario pagina ID")]
         public int TipoUsuarioPaginaId { get; set; }
 
-        [DisplayName("Tipo usuario ID")]
-        public int? TipoUsuarioId { get; set; }
+        public int? TipousuarioId { get; set; }
 
-        [DisplayName("Pagina ID")]
         public int? PaginaId { get; set; }
 
-        [DisplayName("Boton Habilitado")]
         public int? BotonHabilitado { get; set; }
 
         public string NombreTipoUsuario { get; set; }

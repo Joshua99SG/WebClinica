@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebClinica.Models;
-using Microsoft.AspNetCore.Mvc;
-using WebClinica.Models.ViewModel;
 using Clinica.Models;
+using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Mvc;
+using WebClinica.Models;
+using WebClinica.Models.ViewModel;
 
-namespace WebClinica.Controllers
+namespace Clinica.Controllers
 {
     public class ConsultaCitasController : Controller
     {
@@ -19,11 +20,10 @@ namespace WebClinica.Controllers
         {
             _db = db;
         }
-
         public IActionResult Index(DateTime FechaInicio, DateTime FechaFinal)
         {
-            String _FechaInicio = FechaInicio.ToString("dd-MM-yyyy");
-            String _FechaFinal = FechaFinal.ToString("dd-MM-yyyy");
+           String _FechaInicio =  FechaInicio.ToString("dd-MM-yyyy");
+           String _FechaFinal = FechaFinal.ToString("dd-MM-yyyy");
 
 
             if ((_FechaInicio == "01-01-0001") || (_FechaFinal == "01-01-0001"))
@@ -69,7 +69,7 @@ namespace WebClinica.Controllers
                               on citas.EspecialidadId equals
                               especialidad.EspecialidadId
 
-                              where (citas.FechaCita >= FechaInicio
+                              where (citas.FechaCita >= FechaInicio 
                                   && citas.FechaCita <= FechaFinal)
 
                               select new CitaMedica
@@ -88,14 +88,12 @@ namespace WebClinica.Controllers
             lista = listaCitas;
             return View(listaCitas);
         }
-
         //metodo que descarga el archivo excel
         public FileResult exportarExcel()
         {
             Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "Cita ID", "Paciente", "Medico", "Especialidad", "Fecha Cita" };
-            string[] nombrePropiedades = { "CitaId", "NombrePaciente", "NombreMedico",
-                                           "NombreEspecialidad","FechaCita"};
+            string[] cabeceras = {"Paciente", "Medico","Especialidad", "Fecha Cita" };
+            string[] nombrePropiedades = {"NombrePaciente", "NombreMedico", "NombreEspecialidad","FechaCita"};
             byte[] buffer = util.generarExcel(cabeceras, nombrePropiedades, lista);
             //content type mime xlsx google
             return File(buffer, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -103,10 +101,9 @@ namespace WebClinica.Controllers
         public FileResult exportarPDF()
         {
             Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "Cita ID", "Paciente", "Medico", "Especialidad", "Fecha Cita" };
+            string[] cabeceras = {"Paciente", "Medico", "Especialidad", "Fecha Cita" };
 
-            string[] nombrePropiedades = { "CitaId", "NombrePaciente", "NombreMedico",
-                                           "NombreEspecialidad","FechaCita"};
+            string[] nombrePropiedades = {"NombrePaciente", "NombreMedico","NombreEspecialidad","FechaCita"};
             string titulo = "Reporte de Citas Médicas";
             byte[] buffer = util.ExportarPDFDatos(nombrePropiedades, lista, titulo);
             return File(buffer, "application/pdf");

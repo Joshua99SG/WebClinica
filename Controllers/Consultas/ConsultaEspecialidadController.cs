@@ -10,9 +10,10 @@ namespace WebClinica.Controllers
 {
     public class ConsultaEspecialidadController : Controller
     {
-        private readonly DBClinicaAcmeContext _db;
-
         static List<Especialidad> lista = new List<Especialidad>();
+
+        private readonly DBClinicaAcmeContext _db;
+      
 
         public ConsultaEspecialidadController(DBClinicaAcmeContext db)
         {
@@ -49,29 +50,27 @@ namespace WebClinica.Controllers
             return listaEspecialidad;
         }
 
-
         public IActionResult Index()
         {
             List<Especialidad> listaEspecialidad = new List<Especialidad>();
             listaEspecialidad = BuscarEspecialidad("");
             return View(listaEspecialidad);
         }
-        //metodo que descarga el archivo excel
+
         public FileResult exportarExcel()
         {
             Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "Especialidad", "Nombre", "Descripcion" };
-            string[] nombrePropiedades = { "EspecialidadId", "Nombre", "Descripcion" };
+            string[] cabeceras = { "Nombre", "Descripcion"};
+            string[] nombrePropiedades = { "Nombre", "Descripcion" };
             byte[] buffer = util.generarExcel(cabeceras, nombrePropiedades, lista);
-            //content type mime xlsx google
             return File(buffer, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
         public FileResult exportarPDF()
         {
             Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "Especialidad", "Nombre", "Descripcion" };
-            string[] nombrePropiedades = { "EspecialidadId", "Nombre", "Descripcion" };
-            string titulo = "Reporte de Especialidad";
+            string[] cabeceras = { "Nombre", "Descripcion" };
+            string[] nombrePropiedades = { "Nombre", "Descripcion" };
+            string titulo = "Reporte de especialidad";
             byte[] buffer = util.ExportarPDFDatos(nombrePropiedades, lista, titulo);
             return File(buffer, "application/pdf");
         }

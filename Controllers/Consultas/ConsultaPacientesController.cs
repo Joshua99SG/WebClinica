@@ -6,15 +6,15 @@ using Clinica.Models;
 using Microsoft.AspNetCore.Mvc;
 using WebClinica.Models;
 
-namespace WebClinica.Controllers
+namespace Clinica.Controllers
 {
-    public class ConsultaPacienteController : Controller
+    public class ConsultaPacientesController : Controller
     {
         private readonly DBClinicaAcmeContext _db;
 
         static List<Paciente> lista = new List<Paciente>();
 
-        public ConsultaPacienteController(DBClinicaAcmeContext db)
+        public ConsultaPacientesController(DBClinicaAcmeContext db)
         {
             _db = db;
         }
@@ -24,38 +24,33 @@ namespace WebClinica.Controllers
             if (nombrePaciente == null || nombrePaciente.Length == 0)
             {
                 listaPaciente = (from paciente in _db.Paciente
-                               select new Paciente
-                               {
-                                   PacienteId = paciente.PacienteId,
-                                   Nombre = paciente.Nombre,
-                                   Apellidos = paciente.Apellidos,
-                                   Direccion = paciente.Direccion,
-                                   TelefonoContacto = paciente.TelefonoContacto,
-                                   Foto = paciente.Foto,
-                               }).ToList();
-
+                                     select new Paciente
+                                     {
+                                         PacienteId = paciente.PacienteId,
+                                         Nombre = paciente.Nombre,
+                                         Apellidos = paciente.Apellidos,
+                                         Direccion = paciente.Direccion,
+                                         TelefonoContacto = paciente.TelefonoContacto
+                                     }).ToList();
                 ViewBag.Paciente = "";
             }
             else
             {
                 listaPaciente = (from paciente in _db.Paciente
                                  where paciente.Nombre.Contains(nombrePaciente)
-                               select new Paciente
-                               {
-                                   PacienteId = paciente.PacienteId,
-                                   Nombre = paciente.Nombre,
-                                   Apellidos = paciente.Apellidos,
-                                   Direccion = paciente.Direccion,
-                                   TelefonoContacto = paciente.TelefonoContacto,
-                                   Foto = paciente.Foto,
-                               }).ToList();
+                                 select new Paciente
+                                 {
+                                     PacienteId = paciente.PacienteId,
+                                     Nombre = paciente.Nombre,
+                                     Apellidos = paciente.Apellidos,
+                                     Direccion = paciente.Direccion,
+                                     TelefonoContacto = paciente.TelefonoContacto
+                                 }).ToList();
                 ViewBag.Paciente = nombrePaciente;
             }
             lista = listaPaciente;
             return listaPaciente;
         }
-
-
         public IActionResult Index()
         {
             List<Paciente> listaPaciente = new List<Paciente>();
@@ -66,8 +61,8 @@ namespace WebClinica.Controllers
         public FileResult exportarExcel()
         {
             Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "PacienteId", "Nombre", "Apellidos", "Direccion", "Telefono Contacto", "Foto"};
-            string[] nombrePropiedades = { "PacienteId", "Nombre", "Apellidos", "Direccion", "Telefono Contacto", "Foto" };
+            string[] cabeceras = { "Paciente ID", "Nombre", "Apellidos", "Direccion","Telefono" };
+            string[] nombrePropiedades = { "PacienteId", "Nombre","Apellidos", "Direccion","TelefonoContacto" };
             byte[] buffer = util.generarExcel(cabeceras, nombrePropiedades, lista);
             //content type mime xlsx google
             return File(buffer, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
@@ -75,9 +70,9 @@ namespace WebClinica.Controllers
         public FileResult exportarPDF()
         {
             Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "PacienteId", "Nombre", "Apellidos", "Direccion", "Telefono Contacto", "Foto" };
-            string[] nombrePropiedades = { "PacienteId", "Nombre", "Apellidos", "Direccion", "Telefono Contacto", "Foto" };
-            string titulo = "Reporte de paciente";
+            string[] cabeceras = { "Paciente ID", "Nombre", "Apellidos", "Direccion", "Telefono" };
+            string[] nombrePropiedades = { "PacienteId", "Nombre", "Apellidos", "Direccion", "TelefonoContacto" };
+            string titulo = "Reporte de Pacientes";
             byte[] buffer = util.ExportarPDFDatos(nombrePropiedades, lista, titulo);
             return File(buffer, "application/pdf");
         }

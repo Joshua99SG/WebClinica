@@ -1,13 +1,13 @@
-﻿@model IEnumerable<MedicoEspecialidad>
+﻿@model IEnumerable<CitaMedica>
 @using WebClinica.Models.ViewModel
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Content.cshtml";
-    String nombreMedico = ViewBag.Medico;
+    String nombreCitas = ViewBag.Citas;
 }
 
 <head>
-    <title>Consulta Medico</title>
+    <title>Consulta Citas</title>
 </head>
 <partial name="_Menu" />
 <div class="container">
@@ -16,13 +16,13 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6 col-lg-12">
-                    <h2 class="text-light">Consulta Medico</h2>
+                    <h2 class="text-light">Consulta citas</h2>
                 </div>
             </div>
-            <form asp-controller="ConsultaMedico" asp-action="Index" method="post" id="frmFilter">
+            <form asp-controller="ConsultaCitas" asp-action="Index" method="post" id="frmFilter">
                 <div class="row contenedorBotonesPrincipalesIndex">
                     <div class="col-md-2 col-lg-2">
-                        <label>Buscar medicos:</label>
+                        <label>Buscar cita:</label>
                     </div>
                     <br />
                     <div class="col-md-2 col-lg-2 text-align-center">
@@ -58,25 +58,45 @@
                     <table class="table table-hover border .table-responsive" id="TbEspecial">
                         <thead class="thead-dark">
                             <tr class="table-secondary trs">
-                                <th>@Html.DisplayNameFor(m => m.Nombre)</th>
-                                <th>@Html.DisplayNameFor(m => m.Apellidos)</th>
-                                <th>@Html.DisplayNameFor(m => m.Direccion)</th>
-                                <th>@Html.DisplayNameFor(m => m.TelefonoFijo)</th>
-                                <th>@Html.DisplayNameFor(m => m.TelefonoCelular)</th>
-                                <th>@Html.DisplayNameFor(m => m.Especialidad)</th>
-                                <th></th>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NombrePaciente)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NombreMedico)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.NombreEspecialidad)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.FechaCita)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Diagnostico)
+                                </th>
+
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@Html.DisplayFor(m => item.Nombre)</td>
-                                    <td>@Html.DisplayFor(m => item.Apellidos)</td>
-                                    <td>@Html.DisplayFor(m => item.Direccion)</td>
-                                    <td>@Html.DisplayFor(m => item.TelefonoFijo)</td>
-                                    <td>@Html.DisplayFor(m => item.TelefonoCelular)</td>
-                                    <td>@Html.DisplayFor(m => item.Especialidad)</td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NombrePaciente)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NombreMedico)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.NombreEspecialidad)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.FechaCita, "{0:dd/MM/yyyy}")
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Diagnostico)
+                                    </td>
                                 </tr>
                             }
                         </tbody>
@@ -85,18 +105,24 @@
             }
             else
             {
-                <h2 style="color:red">No se encontraron médicos.</h2>
+                <h2 class="textoInformativo">No hay medicos en la lista.</h2>
             }
         </div>
-        <form asp-action="exportarPDF" target="_blank" asp-controller="ConsultaMedico"
+        <form asp-action="exportarPDF" target="_blank" asp-controller="ConsultaCitas"
               method="post" id="viewExportarPDF">
             @*solo sirve para ejecutar el actionresult*@
         </form>
-        <form asp-action="exportarExcel" asp-controller="ConsultaMedico"
+        <form asp-action="exportarExcel" asp-controller="ConsultaCitas"
               method="post" id="viewExportarExcel">
             @*solo sirve para ejecutar el actionresult*@
         </form>
     </main>
 </div>
 <partial name="_EndPag" />
+
+
+
+
+
+
 

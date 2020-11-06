@@ -202,15 +202,5 @@ namespace WebClinica.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
-        public FileResult exportar()
-        {
-            Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "Id Médico", "Nombre", "Apellidos", "Dirección", "Especialidad" };
-            string[] nombrePropiedades = { "MedicoId", "Nombre", "Apellidos", "Direccion", "Especialidad" };
-            string titulo = "Reporte de Médicos";
-            byte[] buffer = util.ExportarPDFDatos(nombrePropiedades, lista, titulo);
-            return File(buffer, "application/pdf");
-        }
     }
 }

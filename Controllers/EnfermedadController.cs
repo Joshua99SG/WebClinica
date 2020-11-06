@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Clinica.Models;
 using Microsoft.AspNetCore.Mvc;
 using WebClinica.Models;
 
@@ -11,6 +12,8 @@ namespace WebClinica.Controllers
     {
         private readonly DBClinicaAcmeContext _db;
         List<Enfermedad> listaEnfermedad = new List<Enfermedad>();
+
+
         public EnfermedadController(DBClinicaAcmeContext db)
         {
             _db = db;
@@ -18,17 +21,17 @@ namespace WebClinica.Controllers
         public IActionResult Index()
         {
             listaEnfermedad = (from enfermedad in _db.Enfermedad
-                                 select new Enfermedad
-                                 {
-                                     EnfermedadId = enfermedad.EnfermedadId,
-                                     Nombre = enfermedad.Nombre,
-                                     Descripcion = enfermedad.Descripcion
-                                 }).ToList();
+                               select new Enfermedad
+                               {
+                                   EnfermedadId = enfermedad.EnfermedadId,
+                                   Nombre = enfermedad.Nombre,
+                                   Descripcion = enfermedad.Descripcion.Substring(0, 85) + "..."
+                               }).ToList();
             var model = listaEnfermedad;
             return View("Index", model);
         }
-        [HttpGet]
-        public IActionResult Create()
+
+        private void cargarUltimoRegistro()
         {
             var ultimoRegistro = _db.Set<Enfermedad>().OrderByDescending(e => e.EnfermedadId).FirstOrDefault();
             if (ultimoRegistro == null)
@@ -39,6 +42,12 @@ namespace WebClinica.Controllers
             {
                 ViewBag.ID = ultimoRegistro.EnfermedadId + 1;
             }
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            cargarUltimoRegistro();
             return View();
         }
         [HttpPost]
@@ -53,7 +62,12 @@ namespace WebClinica.Controllers
                 }
                 else
                 {
-                    _db.Enfermedad.Add(enfermedad);
+                    cargarUltimoRegistro();
+                    Enfermedad _enfermedad = new Enfermedad();
+                    _enfermedad.EnfermedadId = ViewBag.ID;
+                    _enfermedad.Nombre = enfermedad.Nombre;
+                    _enfermedad.Descripcion = enfermedad.Descripcion;
+                    _db.Enfermedad.Add(_enfermedad);
                     _db.SaveChanges();
                 }
             }
@@ -67,17 +81,17 @@ namespace WebClinica.Controllers
         //Apartir de aca todo nuevo
         public IActionResult Details(int id)
         {
-            Enfermedad enfermedad = _db.Enfermedad
+            Enfermedad oEnfermedad = _db.Enfermedad
                          .Where(e => e.EnfermedadId == id).First();
-            return View(enfermedad);
+            return View(oEnfermedad);
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            Enfermedad enfermedad = _db.Enfermedad
-                         .Where(e => e.EnfermedadId == id).First();
-            return View(enfermedad);
+            Enfermedad oEnfermedad = _db.Enfermedad
+                        .Where(e => e.EnfermedadId == id).First();
+            return View(oEnfermedad);
         }
 
         [HttpPost]
@@ -109,9 +123,9 @@ namespace WebClinica.Controllers
             var Error = "";
             try
             {
-                Enfermedad enfermedad = _db.Enfermedad
+                Enfermedad oEnfermedad = _db.Enfermedad
                              .Where(e => e.EnfermedadId == EnfermedadId).First();
-                _db.Enfermedad.Remove(enfermedad);
+                _db.Enfermedad.Remove(oEnfermedad);
                 _db.SaveChanges();
             }
             catch (Exception ex)

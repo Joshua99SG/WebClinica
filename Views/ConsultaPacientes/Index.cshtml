@@ -1,13 +1,13 @@
-﻿@model IEnumerable<MedicoEspecialidad>
-@using WebClinica.Models.ViewModel
+﻿@model IEnumerable<Paciente>
+
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Content.cshtml";
-    String nombreMedico = ViewBag.Medico;
+    String nombrePaciente = ViewBag.Paciente;
 }
 
 <head>
-    <title>Consulta Medico</title>
+    <title>Consulta Paciente</title>
 </head>
 <partial name="_Menu" />
 <div class="container">
@@ -16,17 +16,17 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6 col-lg-12">
-                    <h2 class="text-light">Consulta Medico</h2>
+                    <h2 class="text-light">Consulta Paciente</h2>
                 </div>
             </div>
-            <form asp-controller="ConsultaMedico" asp-action="Index" method="post" id="frmFilter">
+            <form asp-controller="ConsultaPacientes" asp-action="Index" method="post" id="frmFilter">
                 <div class="row contenedorBotonesPrincipalesIndex">
                     <div class="col-md-2 col-lg-2">
-                        <label>Buscar medicos:</label>
+                        <label>Buscar paciente:</label>
                     </div>
                     <br />
                     <div class="col-md-2 col-lg-2 text-align-center">
-                        <input type="text" class="form-control" name="nombre" id="nombre" value="" style="width: 100%;height:100%;" />
+                        <input type="text" class="form-control" name="nombre" id="nombre" value="@ViewBag.Especialidad" style="width: 100%;height:100%;" />
                     </div>
                     <br />
                     <div class="col-md-2 col-lg-1 text-align-center">
@@ -58,12 +58,19 @@
                     <table class="table table-hover border .table-responsive" id="TbEspecial">
                         <thead class="thead-dark">
                             <tr class="table-secondary trs">
-                                <th>@Html.DisplayNameFor(m => m.Nombre)</th>
-                                <th>@Html.DisplayNameFor(m => m.Apellidos)</th>
-                                <th>@Html.DisplayNameFor(m => m.Direccion)</th>
-                                <th>@Html.DisplayNameFor(m => m.TelefonoFijo)</th>
-                                <th>@Html.DisplayNameFor(m => m.TelefonoCelular)</th>
-                                <th>@Html.DisplayNameFor(m => m.Especialidad)</th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Nombre)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Apellidos)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Direccion)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.TelefonoContacto)
+                                </th>
+
                                 <th></th>
                             </tr>
                         </thead>
@@ -71,12 +78,20 @@
                             @foreach (var item in Model)
                             {
                                 <tr>
-                                    <td>@Html.DisplayFor(m => item.Nombre)</td>
-                                    <td>@Html.DisplayFor(m => item.Apellidos)</td>
-                                    <td>@Html.DisplayFor(m => item.Direccion)</td>
-                                    <td>@Html.DisplayFor(m => item.TelefonoFijo)</td>
-                                    <td>@Html.DisplayFor(m => item.TelefonoCelular)</td>
-                                    <td>@Html.DisplayFor(m => item.Especialidad)</td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Nombre)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Apellidos)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Direccion)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TelefonoContacto)
+                                    </td>
+
+                                    <partial name="_AddEditAndView" model="item.PacienteId" />
                                 </tr>
                             }
                         </tbody>
@@ -88,11 +103,11 @@
                 <h2 style="color:red">No se encontraron médicos.</h2>
             }
         </div>
-        <form asp-action="exportarPDF" target="_blank" asp-controller="ConsultaMedico"
+        <form asp-action="exportarPDF" target="_blank" asp-controller="ConsultaPacientes"
               method="post" id="viewExportarPDF">
             @*solo sirve para ejecutar el actionresult*@
         </form>
-        <form asp-action="exportarExcel" asp-controller="ConsultaMedico"
+        <form asp-action="exportarExcel" asp-controller="ConsultaPacientes"
               method="post" id="viewExportarExcel">
             @*solo sirve para ejecutar el actionresult*@
         </form>

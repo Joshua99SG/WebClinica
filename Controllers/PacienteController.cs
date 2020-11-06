@@ -31,15 +31,6 @@ namespace WebClinica.Controllers
         }
         public IActionResult Create()
         {
-            var ultimoRegistro = _db.Set<Paciente>().OrderByDescending(e => e.PacienteId).FirstOrDefault();
-            if (ultimoRegistro == null)
-            {
-                ViewBag.ID = 1;
-            }
-            else
-            {
-                ViewBag.ID = ultimoRegistro.PacienteId + 1;
-            }
             return View();
         }
         [HttpPost]

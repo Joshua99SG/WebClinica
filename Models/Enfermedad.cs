@@ -16,8 +16,9 @@ namespace WebClinica.Models
         [Display(Name = "Nombre:")]
         public string Nombre { get; set; }
 
-        [Required(ErrorMessage = "Debe digitar la descripcion de la emfermedad")]
         [Display(Name = "Descripcion:")]
+        [StringLength(400, ErrorMessage = "Ha excedido los 400 caracteres")]
+        [Required(ErrorMessage = "Debe digitar la descripción de la Especialidad")]
         public string Descripcion { get; set; }
     }
 }

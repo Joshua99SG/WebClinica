@@ -63,7 +63,12 @@ namespace WebClinica.Controllers
                 }
                 else
                 {
-                    _db.Especialidad.Add(especialidad);
+                    cargarUltimoRegistro();
+                    Especialidad _especialidad = new Especialidad();
+                    _especialidad.EspecialidadId = ViewBag.ID;
+                    _especialidad.Nombre = especialidad.Nombre;
+                    _especialidad.Descripcion = especialidad.Descripcion;
+                    _db.Especialidad.Add(_especialidad);
                     _db.SaveChanges();
                 }
             }

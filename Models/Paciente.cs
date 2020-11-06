@@ -38,8 +38,6 @@ namespace WebClinica.Models
             ErrorMessage = "Ingrese una dirección de correo válida")]
         public string Email { get; set; }
 
-        public string Foto { get; set; }
-
         public virtual ICollection<Citas> Citas { get; set; }
     }
 }

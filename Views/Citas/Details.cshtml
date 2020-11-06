@@ -1,7 +1,7 @@
-﻿@model Citas
+﻿@model WebClinica.Models.Citas
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Content.cshtml";
     List<SelectListItem> ListaPacientes = ViewBag.ListaPacientes;
     List<SelectListItem> ListaMedicos = ViewBag.ListaMedicos;
@@ -10,16 +10,16 @@
 }
 
 <head>
-    <title>Editar cita</title>
+    <title>Detalle cita</title>
 </head>
 <partial name="_Menu" />
 <div class="container contenedorPrincipalCreate">
     <main class="pb-3" role="main">
         <div class="row">
-            <form asp-action="Edit" method="post" id="viewEditarCita">
+            <form asp-action="Details" method="post">
                 <div class="container-fluid">
                     <fieldset>
-                        <legend class="text-center header">Editar una cita</legend>
+                        <legend class="text-center header">Detalle de cita</legend>
                         <br class="brDivisor" />
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group row">
@@ -27,7 +27,7 @@
                                 <label asp-for="Paciente" class="control-label"></label>
                             </div>
                             <div class="col-md-6">
-                                <select asp-for="PacienteId" asp-items="@ListaPacientes" readonly="readonly" class="form-control"></select>
+                                <select asp-for="PacienteId" asp-items="@ListaPacientes" class="form-control" disabled></select>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -35,7 +35,7 @@
                                 <label asp-for="Medico" class="control-label"></label>
                             </div>
                             <div class="col-md-6">
-                                <select asp-for="MedicoId" asp-items="@ListaMedicos" class="form-control"></select>
+                                <select asp-for="MedicoId" asp-items="@ListaMedicos" class="form-control" disabled></select>
                             </div>
                         </div>
                         <div class="form-group row">
@@ -43,7 +43,7 @@
                                 <label asp-for="FechaCita" class="control-label"></label>
                             </div>
                             <div class="col-md-6">
-                                <input type="date" asp-for="FechaCita"  value="@Fecha" class="form-control" />
+                                <input type="date" asp-for="FechaCita" class="form-control" disabled/>
                             </div>
                             <span asp-validation-for="FechaCita" class="text-danger"></span>
                         </div>
@@ -52,7 +52,7 @@
                                 <label asp-for="Diagnostico" class="control-label"></label>
                             </div>
                             <div class="col-md-6">
-                                <input asp-for="Diagnostico" class="form-control" placeholder="Diagnostico" />
+                                <input asp-for="Diagnostico" class="form-control" placeholder="Diagnostico" disabled/>
                             </div>
                             <span asp-validation-for="Diagnostico" class="text-danger"></span>
                         </div>
@@ -61,17 +61,13 @@
                                 <label asp-for="Especialidad" class="control-label"></label>
                             </div>
                             <div class="col-md-6">
-                                <select asp-for="EspecialidadId" asp-items="@ListaEspecialidades" class="form-control"></select>
+                                <select asp-for="EspecialidadId" asp-items="@ListaEspecialidades" class="form-control" disabled></select>
                             </div>
                         </div>
                     </fieldset>
                     <div class="row contenedorBotonesCreate">
-                        <div class="col-md-4 text-align-right">
-                            <input type="submit" class="btn btn-primary btn-lg" value="Editar" id="editar" onclick="Editar()"/>
-                        </div>
-                        <br />
                         <div class="col-md-4">
-                            <a class="btn btn-info btn-lg" id="regresar" asp-action="Index">Regresar</a>
+                            <a class="btn btn-info btn-lg botonesRegresar" id="regresar" asp-action="Index">Regresar</a>
                         </div>
                     </div>
                 </div>
@@ -80,3 +76,4 @@
     </main>
 </div>
 <partial name="_EndPag" />
+

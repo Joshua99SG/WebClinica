@@ -44,12 +44,12 @@
                         <tbody>
                             @foreach (var item in Model)
                             {
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.UsuarioId)</td>
-                                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-                                <td> @Html.DisplayFor(modelItem => item.TipoUsuarioNombre)</td>
-                                <partial name="_AddEditAndView" model="item.UsuarioId" />
-                            </tr>
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.UsuarioId)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                                    <td> @Html.DisplayFor(modelItem => item.TipoUsuarioNombre)</td>
+                                    <partial name="_AddEditAndView" model="item.UsuarioId" />
+                                </tr>
                             }
                         </tbody>
                     </table>
@@ -63,7 +63,7 @@
         <form asp-action="Delete" asp-controller="Usuario" method="post" id="viewEliminarUsuario">
             <input type="hidden" id="txtUsuarioId" name="UsuarioId" />
         </form>
-        <form asp-action="Edit" asp-controller="Medico" method="post" id="viewEditarUsuario">
+        <form asp-action="Edit" asp-controller="Usuario" method="post" id="viewEditarUsuario">
             <input type="hidden" id="txtUsuarioId" name="UsuarioId" />
         </form>
     </main>

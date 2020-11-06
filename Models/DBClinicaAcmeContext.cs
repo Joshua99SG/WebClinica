@@ -212,8 +212,8 @@ namespace WebClinica.Models
                     .HasMaxLength(100)
                     .IsUnicode(false);
 
-                entity.Property(e => e.Mensaje)
-                    .HasColumnName("Mensaje")
+                entity.Property(e => e.Menu)
+                    .HasColumnName("Menu")
                     .HasMaxLength(50)
                     .IsUnicode(false);
             });
@@ -228,22 +228,22 @@ namespace WebClinica.Models
 
             modelBuilder.Entity<TipoUsuarioPagina>(entity =>
             {
-                entity.Property(e => e.TipousuariopaginaId)
+                entity.Property(e => e.TipoUsuarioPaginaId)
                     .HasColumnName("TipousuariopaginaId");
 
                 entity.Property(e => e.BotonHabilitado)
                     .HasColumnName("BotonHabilitado");
 
-                entity.Property(e => e.Paginaid)
+                entity.Property(e => e.PaginaId)
                     .HasColumnName("Paginaid");
 
-                entity.Property(e => e.TipousuarioId)
+                entity.Property(e => e.TipoUsuarioId)
                     .HasColumnName("TipousuarioId");
             });
 
             modelBuilder.Entity<TipoUsuarioPaginaBoton>(entity =>
             {
-                entity.Property(e => e.TipousuariopaginabotonId)
+                entity.Property(e => e.TipoUsuarioPaginaBotonId)
                     .HasColumnName("TipousuariopaginabotonId");
 
                 entity.Property(e => e.BotonHabilitado)
@@ -252,7 +252,7 @@ namespace WebClinica.Models
                 entity.Property(e => e.BotonId)
                     .HasColumnName("BotonHabilitado");
 
-                entity.Property(e => e.TipousuariopaginaId)
+                entity.Property(e => e.TipoUsuarioPaginaId)
                     .HasColumnName("TipousuariopaginaId");
             });
 

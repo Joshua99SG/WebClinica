@@ -24,30 +24,19 @@ namespace WebClinica.Controllers
         public List<UsuarioTipoUsuario> listarUsuarios()
         {
             listaUsuario = (from usuario in _db.Usuario
-                             join _TipoUsuario in _db.TipoUsuario
-                             on usuario.TipoUsuarioId equals _TipoUsuario.TipoUsuarioId
-                             select new UsuarioTipoUsuario
-                             {
-                                 UsuarioId = usuario.UsuarioId,
-                                 Nombre = usuario.Nombre,
-                                 TipoUsuarioNombre = _TipoUsuario.Nombre,
-                                 Password = usuario.Password,
-                             }).ToList();
+                            join _TipoUsuario in _db.TipoUsuario
+                            on usuario.TipoUsuarioId equals _TipoUsuario.TipoUsuarioId
+                            select new UsuarioTipoUsuario
+                            {
+                                UsuarioId = usuario.UsuarioId,
+                                Nombre = usuario.Nombre,
+                                TipoUsuarioNombre = _TipoUsuario.Nombre,
+                                Password = usuario.Password,
+                            }).ToList();
             return listaUsuario;
         }
 
-        private void cargarUltimoRegistro()
-        {
-            var ultimoRegistro = _db.Set<Usuario>().OrderByDescending(e => e.UsuarioId).FirstOrDefault();
-            if (ultimoRegistro == null)
-            {
-                ViewBag.ID = 1;
-            }
-            else
-            {
-                ViewBag.ID = ultimoRegistro.UsuarioId + 1;
-            }
-        }
+
 
         private void cargarTipoUsuarios()
         {
@@ -87,7 +76,6 @@ namespace WebClinica.Controllers
         public IActionResult Create()
         {
             cargarTipoUsuarios();
-            cargarUltimoRegistro();
             return View();
         }
 

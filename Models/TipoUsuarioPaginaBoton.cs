@@ -7,10 +7,10 @@ namespace Clinica.Models
     public partial class TipoUsuarioPaginaBoton
     {
         [DisplayName("Tipo usuario pagina boton ID")]
-        public int TipousuariopaginabotonId { get; set; }
+        public int TipoUsuarioPaginaBotonId { get; set; }
 
         [DisplayName("Tipo usuario pagina ID")]
-        public int? TipousuariopaginaId { get; set; }
+        public int? TipoUsuarioPaginaId { get; set; }
 
         [DisplayName("Boton ID")]
         public int? BotonId { get; set; }
