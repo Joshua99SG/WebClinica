@@ -147,8 +147,8 @@ namespace WebClinica.Controllers
                                     {
                                         TipoUsuarioPaginaId = paginatipousu.TipoUsuarioPaginaId,
 
-                                        NombrePagina = pagina.Menu,
-                                        NombreTipoUsuario = tipousu.Nombre
+                                        //NombrePagina = pagina.Menu,
+                                      //  NombreTipoUsuario = tipousu.Nombre
                                     }).ToList();
             }
             else
@@ -163,8 +163,8 @@ namespace WebClinica.Controllers
                                     select new TipoUsuarioPagina
                                     {
                                         TipoUsuarioPaginaId = paginatipousu.TipoUsuarioPaginaId,
-                                        NombrePagina = pagina.Menu,
-                                        NombreTipoUsuario = tipousu.Nombre
+                                    //    NombrePagina = pagina.Menu,
+                                     //   NombreTipoUsuario = tipousu.Nombre
                                     }).ToList();
             }
             return ListaTipoUsuario;

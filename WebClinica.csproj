@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Views\AsignaRol\Index.cshtml" />
     <None Include="Views\ConsultaEnfermedad\Index.cshtml" />
     <None Include="Views\ConsultaMedico\Index.cshtml" />
   </ItemGroup>
