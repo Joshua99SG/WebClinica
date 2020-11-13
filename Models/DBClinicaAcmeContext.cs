@@ -220,56 +220,69 @@ namespace WebClinica.Models
 
             modelBuilder.Entity<TipoUsuario>(entity =>
             {
+                entity.Property(e => e.TipoUsuarioId)
+                   .HasColumnName("TipoUsuarioId");
+
                 entity.Property(e => e.Nombre)
                     .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.BotonHabilitado)
+                  .HasColumnName("BotonHabilitado");
+
+                entity.Property(e => e.Descripcion)
+                  .HasColumnName("Descripcion")
+                  .HasMaxLength(400)
+                  .IsUnicode(false);
             });
 
             modelBuilder.Entity<TipoUsuarioPagina>(entity =>
             {
                 entity.Property(e => e.TipoUsuarioPaginaId)
-                    .HasColumnName("TipousuariopaginaId");
+                    .HasColumnName("TipoUsuarioPaginaId");
+
+                entity.Property(e => e.TipoUsuarioId)
+                   .HasColumnName("TipoUsuarioId");
+
+                entity.Property(e => e.PaginaId)
+                  .HasColumnName("PaginaId");
 
                 entity.Property(e => e.BotonHabilitado)
                     .HasColumnName("BotonHabilitado");
 
-                entity.Property(e => e.PaginaId)
-                    .HasColumnName("Paginaid");
-
-                entity.Property(e => e.TipoUsuarioId)
-                    .HasColumnName("TipousuarioId");
             });
 
             modelBuilder.Entity<TipoUsuarioPaginaBoton>(entity =>
             {
                 entity.Property(e => e.TipoUsuarioPaginaBotonId)
-                    .HasColumnName("TipousuariopaginabotonId");
+                    .HasColumnName("TipoUsuarioPaginaBotonId");
+
+                entity.Property(e => e.TipoUsuarioPaginaId)
+                   .HasColumnName("TipoUsuarioPaginaId");
+
+                entity.Property(e => e.BotonId)
+                   .HasColumnName("BotonId");
 
                 entity.Property(e => e.BotonHabilitado)
                     .HasColumnName("BotonHabilitado");
-
-                entity.Property(e => e.BotonId)
-                    .HasColumnName("BotonHabilitado");
-
-                entity.Property(e => e.TipoUsuarioPaginaId)
-                    .HasColumnName("TipousuariopaginaId");
             });
 
             modelBuilder.Entity<Usuario>(entity =>
             {
                 entity.HasKey(e => e.UsuarioId);
+
+                entity.Property(d => d.TipoUsuarioId)
+                  .HasColumnName("TipoUsuarioId");
+
                 entity.Property(e => e.Nombre)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
+                   .IsRequired()
+                   .HasMaxLength(50)
+                   .IsUnicode(false);
 
                 entity.Property(e => e.Password)
                     .HasMaxLength(100)
                     .IsUnicode(false);
-
-                entity.Property(d => d.TipoUsuarioId)
-                    .HasColumnName("TipoUsuarioId");
 
                 entity.HasOne(d => d.TipoUsuario)
                     .WithMany(p => p.Usuario)

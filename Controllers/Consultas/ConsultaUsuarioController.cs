@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Clinica.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebClinica.Filter;
 using WebClinica.Models;
 using WebClinica.Models.ViewModel;
 
 namespace WebClinica.Controllers.Consultas
 {
+    [ServiceFilter(typeof(Seguridad))]
     public class ConsultaUsuarioController : Controller
     {
         private readonly DBClinicaAcmeContext _db;
@@ -47,16 +49,16 @@ namespace WebClinica.Controllers.Consultas
         public FileResult exportarExcel()
         {
             Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "Nombre", "Tipo Usuario", "Password" };
-            string[] nombrePropiedades = { "Nombre", "TipoUsuarioNombre", "Password"};
+            string[] cabeceras = { "Identificacion", "Nombre", "Tipo Usuario", "Password" };
+            string[] nombrePropiedades = { "UsuarioId", "Nombre", "TipoUsuarioNombre", "Password" };
             byte[] buffer = util.generarExcel(cabeceras, nombrePropiedades, lista);
             return File(buffer, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         }
         public FileResult exportarPDF()
         {
             Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "Nombre", "Tipo Usuario", "Password" };
-            string[] nombrePropiedades = { "Nombre", "TipoUsuarioNombre", "Password" };
+            string[] cabeceras = { "Identificacion", "Nombre", "Tipo Usuario", "Password" };
+            string[] nombrePropiedades = { "UsuarioId", "Nombre", "TipoUsuarioNombre", "Password" };
             string titulo = "Reporte de usuarios";
             byte[] buffer = util.ExportarPDFDatos(nombrePropiedades, lista, titulo);
             return File(buffer, "application/pdf");

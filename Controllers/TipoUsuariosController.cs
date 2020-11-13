@@ -4,13 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Clinica.Models;
 using Microsoft.AspNetCore.Mvc;
+using WebClinica.Filter;
 using WebClinica.Models;
 
 namespace Clinica.Controllers
 {
+    [ServiceFilter(typeof(Seguridad))]
     public class TipoUsuariosController : Controller
     {
-        public List<TipoUsuario> listaTipoUsuarios;
+        List<TipoUsuario> listaTipoUsuarios = new List<TipoUsuario>();
+
         private readonly DBClinicaAcmeContext _db;
     
         public TipoUsuariosController(DBClinicaAcmeContext db)
@@ -23,37 +26,48 @@ namespace Clinica.Controllers
                              select new TipoUsuario
                              {
                                  TipoUsuarioId = tipoUsuario.TipoUsuarioId,
-                                 Nombre = tipoUsuario.Nombre
+                                 Nombre = tipoUsuario.Nombre,
+                                 BotonHabilitado = tipoUsuario.BotonHabilitado,
+                                 Descripcion = tipoUsuario.Descripcion
                              }).ToList();
             return listaTipoUsuarios;
         }
-        private void determinarUltimoRegistro()
+
+        private void cargarUltimoRegistro()
         {
             var ultimoRegistro = _db.Set<TipoUsuario>().OrderByDescending(
                 t => t.TipoUsuarioId).FirstOrDefault();
-            if (ultimoRegistro != null)
+            if (ultimoRegistro == null)
             {
-                ViewBag.ID = ultimoRegistro.TipoUsuarioId + 1;
+                ViewBag.ID = 1;
+
             }
             else
             {
-                ViewBag.ID = 1;
+                ViewBag.ID = ultimoRegistro.TipoUsuarioId + 1;
             }
         }
+
         public IActionResult Index()
         {
-            List<TipoUsuario> listaUsuarios = new List<TipoUsuario>();
-            determinarUltimoRegistro();
-            listaUsuarios = listarTipoUsuarios();
-            return View(listaUsuarios);
+            listaTipoUsuarios = listarTipoUsuarios();
+            return View(listaTipoUsuarios);
         }
 
-        public string Create(TipoUsuario _TipoUsuario)
+        [HttpGet]
+        public IActionResult Create()
+        {
+            cargarUltimoRegistro();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(TipoUsuario tipoUsuario)
         {
             string rpta = "";
             try
             {
-                if (!ModelState.IsValid && _TipoUsuario == null)
+                if (!ModelState.IsValid && tipoUsuario == null)
                 {
                     var query = (from state in ModelState.Values
                                  from error in state.Errors
@@ -69,10 +83,16 @@ namespace Clinica.Controllers
                 }
                 else
                 {
-                    rpta = "OK";
-                    TipoUsuario tipoUsuario = new TipoUsuario();
-                    tipoUsuario.Nombre = _TipoUsuario.Nombre;
-                    _db.TipoUsuario.Add(tipoUsuario);
+                    cargarUltimoRegistro();
+                    TipoUsuario _tipoUsuario = new TipoUsuario
+                    {
+                        TipoUsuarioId = ViewBag.ID,
+                        Nombre = tipoUsuario.Nombre,
+                        BotonHabilitado = 1,
+                        Descripcion = tipoUsuario.Descripcion
+                    };
+
+                    _db.TipoUsuario.Add(_tipoUsuario);
                     _db.SaveChanges();
                 }
             }
@@ -80,21 +100,71 @@ namespace Clinica.Controllers
             {
                 rpta = ex.Message;
             }
-            return rpta;
-            }
-        public JsonResult Edit(int? id)
-        {
-            TipoUsuario _TipoUsuario = (from t in _db.TipoUsuario
-                                        where t.TipoUsuarioId == id
-                                        select t).DefaultIfEmpty().First();
-            return Json(_TipoUsuario);
+            return RedirectToAction(nameof(Index));
         }
-        public JsonResult Details(int? id)
+
+        public IActionResult Details(int id)
         {
-            TipoUsuario _tipousuario = (from t in _db.TipoUsuario
-                                where t.TipoUsuarioId == id
-                                select t).DefaultIfEmpty().Single();
-            return Json(_tipousuario);
+            TipoUsuario oTipoUsuario = _db.TipoUsuario
+                         .Where(e => e.TipoUsuarioId == id).First();
+            return View(oTipoUsuario);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            TipoUsuario oTipoUsuario = _db.TipoUsuario
+                         .Where(e => e.TipoUsuarioId == id).First();
+            return View(oTipoUsuario);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(TipoUsuario tipoUsuario)
+        {
+            string error = "";
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(tipoUsuario);
+                }
+                else
+                {
+                    TipoUsuario _tipoUsuario = new TipoUsuario
+                    {
+                        TipoUsuarioId = tipoUsuario.TipoUsuarioId,
+                        Nombre = tipoUsuario.Nombre,
+                        BotonHabilitado = tipoUsuario.BotonHabilitado,
+                        Descripcion = tipoUsuario.Descripcion
+                    };
+
+                    _db.TipoUsuario.Update(_tipoUsuario);
+                    _db.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int? TipoUsuarioId)
+        {
+            var Error = "";
+            try
+            {
+                TipoUsuario oTipoUsuario = _db.TipoUsuario
+                             .Where(e => e.TipoUsuarioId == TipoUsuarioId).First();
+                _db.TipoUsuario.Remove(oTipoUsuario);
+                _db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                Error = ex.Message;
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

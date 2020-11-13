@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Clinica.Models;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Mvc;
+using WebClinica.Filter;
 using WebClinica.Models;
 using WebClinica.Models.ViewModel;
 
 namespace Clinica.Controllers
 {
+    [ServiceFilter(typeof(Seguridad))]
     public class ConsultaCitasController : Controller
     {
         private readonly DBClinicaAcmeContext _db;

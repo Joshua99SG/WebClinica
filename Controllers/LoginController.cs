@@ -36,7 +36,7 @@ namespace Clinica.Controllers
                     rpta = "OK";
                     Usuario User = _db.Usuario.Where(u => u.Nombre == user
                             && u.Password == claveCifrada).First();
-                    HttpContext.Session.SetString("usuarioId", User.UsuarioId.ToString());
+                    HttpContext.Session.SetString("UsuarioId", User.UsuarioId.ToString());
                     HttpContext.Session.SetString("nombreUsuario", User.Nombre);
                     //int idTipo = User.TipoUsuarioId;
                     List<Pagina> lista = new List<Pagina>();
@@ -72,6 +72,7 @@ namespace Clinica.Controllers
                     Utilitarios.MenuMant = "";
                     Utilitarios.MenuCons = "";
                     Utilitarios.MenuAcce = "";
+                    Utilitarios.MenuCita = "";
                     Utilitarios.ListaMenu.Clear();
                     Utilitarios.ListaController.Clear();
                     Utilitarios.ListaAccion.Clear();
@@ -103,7 +104,10 @@ namespace Clinica.Controllers
                         {
                             Utilitarios.MenuAcce = "Accesibilidad";
                         }
-
+                        if (_Pagina.Controlador == "Citas")
+                        {
+                            Utilitarios.MenuCita = "Citas";
+                        }
                     }
                     //https://www.tiracodigo.com/index.php/programacion/mvc/formas-de-almacenar-datos-temporales-en-asp-net-mvc-viewdata-viewbag-tempdata-y-session
                 }

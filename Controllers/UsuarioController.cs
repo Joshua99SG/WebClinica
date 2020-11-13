@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using Clinica.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using WebClinica.Filter;
 using WebClinica.Models;
 using WebClinica.Models.ViewModel;
 
 namespace WebClinica.Controllers
 {
+    [ServiceFilter(typeof(Seguridad))]
     public class UsuarioController : Controller
     {
         private readonly DBClinicaAcmeContext _db;

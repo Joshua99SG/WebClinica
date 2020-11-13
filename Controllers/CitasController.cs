@@ -6,9 +6,11 @@ using WebClinica.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebClinica.Models.ViewModel;
+using WebClinica.Filter;
 
 namespace WebClinica.Controllers
 {
+    [ServiceFilter(typeof(Seguridad))]
     public class CitasController : Controller
     {
         private readonly DBClinicaAcmeContext _db;

@@ -5,10 +5,12 @@ using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebClinica.Filter;
 using WebClinica.Models;
 
 namespace WebClinica.Controllers
 {
+    [ServiceFilter(typeof(Seguridad))]
     public class EspecialidadController : Controller
     {
         private readonly DBClinicaAcmeContext _db;
@@ -134,26 +136,6 @@ namespace WebClinica.Controllers
                 Error = ex.Message;
             }
             return RedirectToAction(nameof(Index));
-        }
-
-        public FileResult exportarExcel()
-        {
-            Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "Especialidad", "Nombre", "Descripcion" };
-            string[] nombrePropiedades = { "EspecialidadId", "Nombre", "Descripcion" };
-            byte[] buffer = util.generarExcel(cabeceras, nombrePropiedades, listaEspecialidad);
-            //content type mime xlsx google
-            return File(buffer, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        }
-
-        public FileResult exportarPDF()
-        {
-            Utilitarios util = new Utilitarios();
-            string[] cabeceras = { "Especialidad", "Nombre", "Descripcion" };
-            string[] nombrePropiedades = { "EspecialidadId", "Nombre", "Descripcion" };
-            string titulo = "Reporte de Especialidad";
-            byte[] buffer = util.ExportarPDFDatos(nombrePropiedades, listaEspecialidad, titulo);
-            return File(buffer, "application/pdf");
         }
     }
 }

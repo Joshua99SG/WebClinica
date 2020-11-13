@@ -7,9 +7,11 @@ using WebClinica.Models.ViewModel;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Clinica.Models;
+using WebClinica.Filter;
 
 namespace WebClinica.Controllers
 {
+    [ServiceFilter(typeof(Seguridad))]
     public class MedicoController : Controller
     {
         private readonly DBClinicaAcmeContext _db;
