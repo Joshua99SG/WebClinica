@@ -1,4 +1,98 @@
-﻿/*--------------------LOGIN--------------------*/
+﻿/*--------------------Asigna Roles--------------------*/
+function Guardar(url) {
+    var TipoUsuarioId = document.getElementById("UserType").value;
+    var BotonHabilitado = 1;
+    var frm = new FormData;
+    frm.append("TipoUsuarioId", TipoUsuarioId);
+    frm.append("BotonHabilitado", BotonHabilitado);
+    var checks = document.getElementsByClassName("checkbox");
+    var nchecks = checks.length
+    for (var i = 0; i < nchecks; i++) {
+        if (checks[i].checked == true) {
+            frm.append("_Paginas[]", checks[i].id.replace("/", ""));
+        }
+    }
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: frm,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            if (data == "OK") {
+                correcto("Se actualizó correctamente el rol segun tipo de usuario!");
+                document.getElementById("frmEnviar").submit();
+                document.getElementById("frmRegresar").submit();
+            }
+            else {
+                error("Ocurrió un error, por favor verifique!");
+            }
+        }
+        //},
+        //error: alert("No se pudo procesar el registro")
+    })
+}
+
+function ListarBotones() {
+    $.get("PaginaTipoUsuario/listarBotones", function (data) {
+        var contenido = "<table class='table'>";
+        contenido += "<thead>";
+        contenido += "<tr>";
+        contenido += "<td></td>";
+        contenido += "<td>Nombre Boton</td>";
+        contenido += "</tr>";
+        contenido += "</thead>";
+        contenido += "<tbody>";
+        for (var i = 0; i < data.length; i++) {
+            contenido += "<tr>";
+            contenido += "<td> <input type='checkbox' class='checkbox' id='chk" + data[i].iidboton + "' /> </td>";
+            contenido += "<td>" + data[i].nombre + "</td>";
+            contenido += "</tr>";
+        }
+        contenido += "</tbody>";
+        contenido += "<table>";
+
+        document.getElementById("divBotones").innerHTML = contenido;
+        recuperar();
+    })
+}
+
+function ListarPaginas() {
+    $.get("/AsignaRol/CargarPaginas/", function (data) {
+        var contenido = "<table class='table'>";
+        contenido += "<thead>";
+        contenido += "<tr>";
+        contenido += "<td></td>";
+        contenido += "<td>Nombre página</td>";
+        contenido += "</tr>";
+        contenido += "</thead>";
+        contenido += "<tbody>";
+        for (var i = 0; i < data.length; i++) {
+            contenido += "<tr>";
+            contenido += "<td> <input type='checkbox' class='checkbox' id='"
+                + data[i].paginaid + "' /> </td>";
+            contenido += "</tr>";
+        }
+        contenido += "</tbody>";
+        contenido += "<table>";
+        document.getElementById("divPaginas").innerHTML = contenido;
+        recuperar();
+    })
+}
+
+function recuperar() {
+    var tipousuarioid = document.getElementById("UserType").value;
+    $.get("/AsignaRol/RecuperarPaginas/?tipousuarioid/" + tipousuarioid, function (data) {
+        for (var i = 0; i < data.length; i++) {
+            var pagid = data[i].Paginaid;
+            var idgene = pagid;
+            document.getElementById(idgene).checked = true;
+        }
+    });
+}
+/*--------------------Asigna Roles--------------------*/
+
+/*--------------------LOGIN--------------------*/
 function Enviar() {
     var user = document.getElementById("name").value;
     var pass = document.getElementById("password").value;
@@ -10,6 +104,7 @@ function Enviar() {
             if (data == "") {
                 error("Usuario o contaseña incorrecto!");
             } else {
+                correcto("Bienvenido!")
                 document.location.href = "/Home/Index"
             }
         },
