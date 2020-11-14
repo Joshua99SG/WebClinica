@@ -15,49 +15,89 @@ namespace WebClinica.Controllers
     public class AsignaRolController : Controller
     {
         public static List<TipoUsuario> lista;
-        private List<Pagina> LstPagina = new List<Pagina>();
+        private List<Pagina> listaPagina = new List<Pagina>();
         public static int UserType;
         private readonly DBClinicaAcmeContext _db;
         public AsignaRolController(DBClinicaAcmeContext db)
         {
             _db = db;
         }
-        public IActionResult Index(TipoUsuario oTipoUsuario)
-        {
-            List<TipoUsuario> listaTipoUsu = new List<TipoUsuario>();
-            listaTipoUsu = (from tipousu in _db.TipoUsuario
-                            where tipousu.BotonHabilitado == 1
-                            select new TipoUsuario
-                            {
-                                TipoUsuarioId = tipousu.TipoUsuarioId,
-                                Nombre = tipousu.Nombre,
-                            }).ToList();
-            if (oTipoUsuario.Nombre != null && oTipoUsuario.TipoUsuarioId != 0)
-            {
 
-                ViewBag.Nombre = oTipoUsuario.Nombre;
-                ViewBag.TipoUsuarioId = oTipoUsuario.TipoUsuarioId;
-            }
-
-            lista = listaTipoUsu;
-            return View(listaTipoUsu);
-        }
-        private List<Pagina> CargarPaginas()
+        public List<Pagina> CargarPaginas()
         {
             //asegurarse que la consulta solo devuelva los perfiles
             //que no estan determinados para este tipo de usuario
             //o sea si ya tiene acceso a especialidades y médico
             //no tendrian que salir estas paginas.
-            LstPagina = (from pagina in _db.Pagina
-                         where pagina.BotonHabilitado == 1
-                         select new Pagina
-                         {
-                             PaginaId = pagina.PaginaId,
-                             Menu = pagina.Menu,
-                             Accion = pagina.Accion,
-                             Controlador = pagina.Controlador
-                         }).ToList();
-            return LstPagina;
+            listaPagina = (from pagina in _db.Pagina
+                           where pagina.BotonHabilitado == 1
+                           select new Pagina
+                           {
+                               PaginaId = pagina.PaginaId,
+                               Menu = pagina.Menu,
+                               Accion = pagina.Accion,
+                               Controlador = pagina.Controlador,
+                               BotonHabilitado = pagina.BotonHabilitado
+                           }).ToList();
+            return listaPagina;
+        }
+
+        private void cargarUltimoRegistro()
+        {
+            var ultimoRegistro = _db.Set<TipoUsuarioPagina>().OrderByDescending(e => e.TipoUsuarioPaginaId).FirstOrDefault();
+            if (ultimoRegistro == null)
+            {
+                ViewBag.ID = 1;
+            }
+            else
+            {
+                ViewBag.ID = ultimoRegistro.TipoUsuarioPaginaId + 1;
+            }
+        }
+
+        public string Registrar(int[] _Paginas, int tipousuarioid)
+        {
+            cargarUltimoRegistro();
+            string rpta = "OK";
+            using (var trans = new TransactionScope())
+
+            {
+                foreach (var item in _Paginas)
+                {
+                    TipoUsuarioPagina _TipoUsuarioPagina = new TipoUsuarioPagina();
+                    _TipoUsuarioPagina.TipoUsuarioPaginaId = ViewBag.ID;
+                    _TipoUsuarioPagina.TipoUsuarioId = tipousuarioid;
+                    _TipoUsuarioPagina.PaginaId = item;
+                    _TipoUsuarioPagina.BotonHabilitado = 1;
+                    _db.TipoUsuarioPagina.Add(_TipoUsuarioPagina);
+                }
+                _db.SaveChanges();
+                trans.Complete();
+            }
+            return rpta;
+        }
+
+        public IActionResult Index(TipoUsuario oTipoUsuario)
+        {
+            List<TipoUsuario> listaTipoUsuario = new List<TipoUsuario>();
+            listaTipoUsuario = (from tipousu in _db.TipoUsuario
+                                where tipousu.BotonHabilitado == 1
+                                select new TipoUsuario
+                                {
+                                    TipoUsuarioId = tipousu.TipoUsuarioId,
+                                    Nombre = tipousu.Nombre,
+                                    Descripcion = tipousu.Descripcion,
+                                }).ToList();
+            if (oTipoUsuario.Nombre != null && oTipoUsuario.TipoUsuarioId != 0)
+            {
+
+                ViewBag.Nombre = oTipoUsuario.Nombre;
+                ViewBag.Descripcion = oTipoUsuario.Descripcion;
+                ViewBag.TipoUsuarioId = oTipoUsuario.TipoUsuarioId;
+            }
+
+            lista = listaTipoUsuario;
+            return View(listaTipoUsuario);
         }
 
         public IActionResult Listar(int? id)
@@ -68,29 +108,8 @@ namespace WebClinica.Controllers
 
             ViewBag.TipoUsu = (int)_TipoUsuario.TipoUsuarioId;
             ViewBag.Usuario = _TipoUsuario.Nombre;
-            return View(LstPagina);
-        }
-        //[HttpPost]
-        public string Registrar(int[] _Paginas, int tipousuarioid)
-        {
-            string rpta = "OK";
-            using (var trans = new TransactionScope())
-            {
-                foreach (var item in _Paginas)
-                {
-                    TipoUsuarioPagina _TipoUsuarioPagina = new TipoUsuarioPagina
-                    {
-                        TipoUsuarioId = tipousuarioid,
-                        PaginaId = item,
-                        BotonHabilitado = 1
-                    };
-
-                    _db.TipoUsuarioPagina.Add(_TipoUsuarioPagina);
-                }
-                _db.SaveChanges();
-                trans.Complete();
-            }
-            return rpta;
+            ViewBag.Descripcion = _TipoUsuario.Descripcion;
+            return View(listaPagina);
         }
     }
 }
