@@ -26,7 +26,7 @@ namespace WebClinica.Controllers
                                  Apellidos = paciente.Apellidos,
                                  Direccion = paciente.Direccion,
                                  TelefonoContacto = paciente.TelefonoContacto,
-                                 Email = paciente.Email
+
                              }).ToList();
             var model = listaPaciente;
             return View("Index", model);
