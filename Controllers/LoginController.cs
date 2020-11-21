@@ -64,7 +64,6 @@ namespace Clinica.Controllers
                                                select new Pagina
                                                {
                                                    PaginaId = (int)tup.PaginaId,
-                                                   BotonId = (int)pgtb.BotonId,
                                                    Controlador = pag.Controlador
                                                }).ToList();
                     Utilitarios.listaBotonesPagina = ListaBoton;
@@ -84,20 +83,21 @@ namespace Clinica.Controllers
                         Utilitarios.ListaAccion.Add(_Pagina.Accion);
                         if (_Pagina.Controlador == "Especialidad" ||
                             _Pagina.Controlador == "Medico" ||
-                            _Pagina.Controlador == "Enfermedades" ||
-                            _Pagina.Controlador == "Pacientes")
+                            _Pagina.Controlador == "Enfermedad" ||
+                            _Pagina.Controlador == "Paciente")
 
                         {
                             Utilitarios.MenuMant = "Mantenimiento";
                         }
                         if (_Pagina.Controlador == "ConsultaEspecialidades" ||
                             _Pagina.Controlador == "ConsultaCitas" ||
-                            _Pagina.Controlador == "ConsultaPacientes")
+                            _Pagina.Controlador == "ConsultaPacientes" ||
+                            _Pagina.Controlador == "ConsultaTipoUsuario")
                         {
                             Utilitarios.MenuCons = "Consultas";
                         }
                         if (_Pagina.Controlador == "TipoUsuarios" ||
-                            _Pagina.Controlador == "Usuarios" ||
+                            _Pagina.Controlador == "Usuario" ||
                             _Pagina.Controlador == "AsignaRol" ||
                             _Pagina.Controlador == "DeterminarRol" ||
                             _Pagina.Controlador == "Pagina")
@@ -108,6 +108,7 @@ namespace Clinica.Controllers
                         {
                             Utilitarios.MenuCita = "Citas";
                         }
+
                     }
                     //https://www.tiracodigo.com/index.php/programacion/mvc/formas-de-almacenar-datos-temporales-en-asp-net-mvc-viewdata-viewbag-tempdata-y-session
                 }

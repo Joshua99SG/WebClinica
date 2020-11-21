@@ -1,27 +1,31 @@
 ﻿/*--------------------Asigna Roles--------------------*/
-function Guardar(url) {
+function AsignarRol(urlAgregar, urlEliminar) {
     var TipoUsuarioId = document.getElementById("UserType").value;
     var BotonHabilitado = 1;
-    var frm = new FormData;
-    frm.append("TipoUsuarioId", TipoUsuarioId);
-    frm.append("BotonHabilitado", BotonHabilitado);
+    var frmAgregar = new FormData;
+    var frmEliminar = new FormData;
+    frmAgregar.append("TipoUsuarioId", TipoUsuarioId);
+    frmEliminar.append("TipoUsuarioId", TipoUsuarioId);
+    frmAgregar.append("BotonHabilitado", BotonHabilitado);
     var checks = document.getElementsByClassName("checkbox");
     var nchecks = checks.length
     for (var i = 0; i < nchecks; i++) {
         if (checks[i].checked == true) {
-            frm.append("_Paginas[]", checks[i].id.replace("/", ""));
+            frmAgregar.append("_PaginasAgregadas[]", checks[i].id.replace("/", ""));
+        } else {
+            frmEliminar.append("_PaginasEliminadas[]", checks[i].id.replace("/", ""));
         }
     }
     $.ajax({
         type: "POST",
-        url: url,
-        data: frm,
+        url: urlAgregar,
+        data: frmAgregar,
         contentType: false,
         processData: false,
         success: function (data) {
             if (data == "OK") {
                 correcto("Se actualizó correctamente el rol segun tipo de usuario!");
-                document.getElementById("frmEnviar").submit();
+                document.getElementById("frmAgregar").submit();
                 document.getElementById("frmRegresar").submit();
             }
             else {
@@ -31,7 +35,27 @@ function Guardar(url) {
         //},
         //error: alert("No se pudo procesar el registro")
     })
+    $.ajax({
+        type: "POST",
+        url: urlEliminar,
+        data: frmEliminar,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+            if (data == "OK") {
+                correcto("Se actualizó correctamente el rol segun tipo de usuario!");
+                document.getElementById("frmEliminar").submit();
+                document.getElementById("frmRegresar").submit();
+            }
+            else {
+                error("Ocurrió un error, por favor verifique!");
+            }
+        }
+    })
 }
+
+
+
 
 function ListarBotones() {
     $.get("PaginaTipoUsuario/listarBotones", function (data) {
@@ -62,8 +86,10 @@ function ListarPaginas() {
         var contenido = "<table class='table'>";
         contenido += "<thead>";
         contenido += "<tr>";
-        contenido += "<td></td>";
-        contenido += "<td>Nombre página</td>";
+        contenido += "<th>PaginaId</th>";
+        contenido += "<th>Controlador</th>";
+        contenido += "<th></th>";
+        contenido += "<th></th>";
         contenido += "</tr>";
         contenido += "</thead>";
         contenido += "<tbody>";
@@ -80,19 +106,20 @@ function ListarPaginas() {
     })
 }
 
-function recuperar() {
-    var tipousuarioid = document.getElementById("UserType").value;
-    $.get("/AsignaRol/RecuperarPaginas/?tipousuarioid/" + tipousuarioid, function (data) {
+function recuperar(tipoUsuarioid) {
+
+    $.get("/AsignaRol/RecuperarPaginas/?tipoUsuarioId=" + tipoUsuarioid, function (data) {
         for (var i = 0; i < data.length; i++) {
-            var pagid = data[i].Paginaid;
-            var idgene = pagid;
-            document.getElementById(idgene).checked = true;
+            var pagid = data[i].paginaId;
+            var cajita = document.getElementById(pagid);
+            cajita.checked = true;
         }
     });
 }
 /*--------------------Asigna Roles--------------------*/
 
 /*--------------------LOGIN--------------------*/
+
 function Enviar() {
     var user = document.getElementById("name").value;
     var pass = document.getElementById("password").value;
@@ -129,6 +156,13 @@ var checkInput = function (input) {
 var closeForm = function () {
     button.className = '';
 };
+
+document.addEventListener("keyup", function (e) {
+    if (e.keyCode == 27 || e.keyCode == 13) {
+        closeForm();
+    }
+});
+
 
 document.addEventListener("keyup", function (e) {
     if (e.keyCode == 27 || e.keyCode == 13) {
@@ -260,6 +294,47 @@ function abrirModalCrearCita() {
         }
     })
 }
+function abrirModalCrearTipoUsuario() {
+    verModal('Agregar tipo usuario', '¿Desea guardar el tipo de Usuario?').then((result) => {
+        if (result.value) {
+            var viewAgregarTipoUsuario = document.getElementById("viewAgregarTipoUsuario");
+            viewAgregarTipoUsuario.submit();
+            Swal.fire(
+                'Agregado!',
+                'El tipo de usuario fue agregado!.',
+                'success'
+            )
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelado',
+                'El tipo usuario no fue agregado!!!:)',
+                'error'
+            )
+        }
+    })
+}
+
+function abrirModalCrearPagina() {
+    verModal('Agregar página ', '¿Desea guardar la página ?').then((result) => {
+        if (result.value) {
+            var viewAgregarPagina = document.getElementById("viewAgregarPagina");
+            viewAgregarPagina.submit();
+            Swal.fire(
+                'Agregado!',
+                'La página fue agregada!.',
+                'success'
+            )
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelado',
+                'La página no fue agregada!!!:)',
+                'error'
+            )
+        }
+    })
+}
 
 /*------------------------------------------------------*/
 /*--------------------MODALES EDITAR--------------------*/
@@ -379,6 +454,47 @@ function abrirModalEditarUsuario() {
             Swal.fire(
                 'Cancelado',
                 'El usuario no fue modificado!!!:)',
+                'error'
+            )
+        }
+    })
+}
+function abrirModalEditarTipoUusuario() {
+    verModal('Modificar tipo Usuario', '¿Desea modificar el tipo Usuario?').then((result) => {
+        if (result.value) {
+            var viewEditarTipoUsuario = document.getElementById("viewEditarTipoUsuario");
+            viewEditarTipoUsuario.submit();
+            Swal.fire(
+                'Modificado!',
+                'El tipo usuario fue modificado!.',
+                'success'
+            )
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelado',
+                'El tipo usuario no fue modificado!!!:)',
+                'error'
+            )
+        }
+    })
+}
+
+function abrirModalEditarPagina() {
+    verModal('Modificar página', '¿Desea modificar el página?').then((result) => {
+        if (result.value) {
+            var viewEditarPagina = document.getElementById("viewEditarPagina");
+            viewEditarPagina.submit();
+            Swal.fire(
+                'Modificado!',
+                'La página fue modificada!.',
+                'success'
+            )
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            Swal.fire(
+                'Cancelado',
+                'La página no fue modificada!!!:)',
                 'error'
             )
         }
@@ -526,6 +642,76 @@ function EliminarUsuario(UsuarioId) {
             }
         })
 }
+function EliminarCita(CitaId) {
+    document.getElementById("txtCitaId").value = CitaId;
+    verModal('Eliminar cita',
+        '¿Desea eliminar la cita con el código '
+        + CitaId + '?').then((result) => {
+            if (result.value) {
+                var viewEliminarCita = document.getElementById("viewEliminarCita");
+                viewEliminarCita.submit();
+                Swal.fire(
+                    'Eliminación!',
+                    'La cita ' + CitaId + ' fue eliminada!.',
+                    'success'
+                )
+            }
+            else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelado',
+                    'La cita no fue eliminada!!!:)',
+                    'error'
+                )
+            }
+        })
+}
+function EliminarTipoUsuario(TipoUsuarioId) {
+    document.getElementById("txtTipoUsuarioId").value = TipoUsuarioId;
+    verModal('Eliminar tipo de usuario',
+        '¿Desea eliminar el tipo de usuario con el código '
+        + TipoUsuarioId + '?').then((result) => {
+            if (result.value) {
+                var viewEliminarTipoUsuario = document.getElementById("viewEliminarTipoUsuario");
+                viewEliminarTipoUsuario.submit();
+                Swal.fire(
+                    'Eliminación!',
+                    'La el tipo de usuario ' + TipoUsuarioId + ' fue eliminado!.',
+                    'success'
+                )
+            }
+            else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelado',
+                    'El tipo de usuario no fue eliminado!!!:)',
+                    'error'
+                )
+            }
+        })
+}
+
+function EliminarPagina(PaginaId) {
+    document.getElementById("txtPaginaId").value = PaginaId;
+    verModal('Eliminar página ',
+        '¿Desea eliminar la página con el código '
+        + PaginaId + '?').then((result) => {
+            if (result.value) {
+                var viewEliminarPagina = document.getElementById("viewEliminarPagina");
+                viewEliminarPagina.submit();
+                Swal.fire(
+                    'Eliminación!',
+                    'La página ' + PaginaId + ' fue eliminada!.',
+                    'success'
+                )
+            }
+            else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire(
+                    'Cancelado',
+                    'El tipo de usuario no fue eliminada!!!:)',
+                    'error'
+                )
+            }
+        })
+}
 
 /*--------------------METODOS ELIMINAR--------------------*/
 /*---------------------METODOS BUSCAR---------------------*/
@@ -571,6 +757,14 @@ function Agregar() {
                     } else {
                         if (titulo == "Agregar citas") {
                             abrirModalCrearCita();
+                        } else {
+                            if (titulo == "Agregar tipo Usuario") {
+                                abrirModalCrearTipoUsuario();
+                            } else {
+                                if (titulo == "Agregar pagina") {
+                                    abrirModalCrearPagina();
+                                }
+                            }
                         }
                     }
                 }
@@ -579,32 +773,40 @@ function Agregar() {
     }
 }
 
-function Editar() {
-    let titulo = document.title;
-    if (titulo == "Editar especialidad") {
-        abrirModalEditarEspecialidad();
-    } else {
-        if (titulo == "Editar medico") {
-            abrirModalEditarMedico();
-        } else {
-            if (titulo == "Editar paciente") {
-                abrirModalEditarPaciente();
+        function Editar() {
+            let titulo = document.title;
+            if (titulo == "Editar especialidad") {
+                abrirModalEditarEspecialidad();
             } else {
-                if (titulo == "Editar enfermedad") {
-                    abrirModalEditarEnfermedad();
+                if (titulo == "Editar medico") {
+                    abrirModalEditarMedico();
                 } else {
-                    if (titulo == "Editar usuario") {
-                        abrirModalEditarUsuario();
+                    if (titulo == "Editar paciente") {
+                        abrirModalEditarPaciente();
                     } else {
-                        if (titulo == "Editar cita") {
-                            abrirModalEditarCita();
+                        if (titulo == "Editar enfermedad") {
+                            abrirModalEditarEnfermedad();
+                        } else {
+                            if (titulo == "Editar usuario") {
+                                abrirModalEditarUsuario();
+                            } else {
+                                if (titulo == "Editar cita") {
+                                    abrirModalEditarCita();
+                                } else {
+                                    if (titulo == "Editar Tipo de Usuario") {
+                                        abrirModalEditarTipoUusuario();
+                                    } else {
+                                        if (titulo == "Lista de páginas") {
+                                            abrirModalEditarPagina();
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-    }
-}
 
 function Eliminar(id) {
     let titulo = document.title;
@@ -625,6 +827,18 @@ function Eliminar(id) {
                     } else {
                         if (titulo == "Usuario") {
                             EliminarUsuario(id);
+                        } else {
+                            if (titulo == "Tipos de Usuarios") {
+                                EliminarTipoUsuario(id);
+                            } else {
+                                if (titulo == "Asigna roles") {
+                                    EliminarTipoUsuario(id);
+                                } else {
+                                    if (titulo == "Lista de páginas") {
+                                        EliminarPagina(id);
+                                    }
+                                }
+                            }
                         }
                     }
                 }

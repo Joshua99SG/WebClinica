@@ -19,9 +19,11 @@
                 </div>
             </div>
             <br />
-            <form asp-action="Registrar" asp-controller="AsignaRol" method="post" id="frmEnviar">
+            <form asp-action="Registrar" asp-controller="AsignaRol" method="post" id="frmAgregar">
             </form>
-            <form asp-controller="AsignaRol" asp-action="Index" method="post" id="frmFilter">
+            <form asp-action="Delete" asp-controller="AsignaRol" method="post" id="frmEliminar">
+            </form>
+            <form asp-controller="TipoUsuario" asp-action="Index" method="post" id="frmFilter">
                 <div class="row">
                     <div class="col-md-12 col-lg-12">
                         <h4 class="text-dark" style="text-align:center;">
@@ -43,13 +45,8 @@
                         </a>
                     </div>
                     <div class="col-md-2 colo-lg-2 text-right">
-                        <a class="btn btn-info fa fa fa-arrow-circle-left inicio" onclick="Guardar('/AsignaRol/Registrar/')">
-                            Guardar Roles
-                        </a>
-                    </div>
-                    <div class="col-md-2 colo-lg-2 text-right">
-                        <a class="btn btn-info fa fa fa-arrow-circle-left inicio" onclick="ListarPaginas()">
-                            Recuperar Roles
+                        <a class="btn btn-info fa fa fa-arrow-circle-left inicio" onclick="AsignarRol('/AsignaRol/Registrar/','/AsignaRol/Delete/')">
+                            Asignar Roles
                         </a>
                     </div>
                 </div>
@@ -58,11 +55,12 @@
             @if (Model.Count() > 0)
             {
                 <div class="contenedorTablas divPaginas">
-                    <table class="table table-hover border .table-responsive" id="TbEspecial">
+                    <table class="table table-hover border .table-responsive">
                         <thead class="thead-dark">
                             <tr class="table-secondary trs">
                                 <th>@Html.DisplayNameFor(model => model.PaginaId)</th>
                                 <th>@Html.DisplayNameFor(model => model.Controlador)</th>
+                                <th></th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -74,7 +72,20 @@
                                     <td>@Html.DisplayFor(m => item.Controlador)</td>
                                     <td>
                                         <input type="checkbox" class="checkbox"
-                                               id=@item.PaginaId/>
+                                               id=@item.PaginaId />
+                                    </td>
+                                    <td style="width:150px">
+                                        <div class="btn-group tabla" id="tabla" role="group">
+                                            <a class="btn btn-primary text-white boton-edit" sp-controller="Pagina" asp-action="Edit" asp-route-Id="@Model">
+                                                <img src="~/images/editar.png" style="width:20px; border-color:black;" />
+                                            </a>
+                                            <a class="btn btn-success text-white boton-list" asp-controller="Pagina" asp-action="Details" asp-route-Id="@Model">
+                                                <img src="~/images/lista.png" style="width:20px; border-color:black;" />
+                                            </a>
+                                            <a class="btn btn-danger text-white boton-delete" aria-hidden="true" onclick="EliminarPagina(@item.PaginaId)">
+                                                <img src="~/images/eliminar (1).png" style="width:20px; border-color:black;" />
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -84,13 +95,24 @@
             }
             else
             {
-                <h2 class="textoInformativo">No hay tipos usuarios en la lista.</h2>
+                <h2 class="textoInformativo">No hay páginas en la lista.</h2>
             }
         </div>
-        <form asp-action="Index" asp-controller="AsignaRol"
+        <form asp-action="Delete" asp-controller="Pagina" method="post" id="viewEliminarPagina">
+            <input type="hidden" id="txtPaginaId" name="PaginaId" />
+        </form>
+        <form asp-action="Edit" asp-controller="Pagina" method="post" id="viewEditarPagina">
+            <input type="hidden" id="txtPaginaId" name="PaginaId" />
+        </form>
+        <form asp-action="Index" asp-controller="TipoUsuarios"
               method="post" id="frmRegresar">
         </form>
     </main>
 </div>
+<script>
+    window.addEventListener('load', () => {
+        recuperar(@ViewBag.TipoUsu);
+    })
+</script>
 <partial name="_EndPag" />
 

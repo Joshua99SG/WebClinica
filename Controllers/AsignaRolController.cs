@@ -8,15 +8,17 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebClinica.Filter;
 using WebClinica.Models;
+using WebClinica.Models.ViewModel;
 
 namespace WebClinica.Controllers
 {
     [ServiceFilter(typeof(Seguridad))]
     public class AsignaRolController : Controller
     {
-        public static List<TipoUsuario> lista;
+        private List<TipoUsuario> lista = new List<TipoUsuario>();
         private List<Pagina> listaPagina = new List<Pagina>();
         public static int UserType;
+        private List<TipoUsuarioPaginas> listaTipoUsuarioPaginas = new List<TipoUsuarioPaginas>();
         private readonly DBClinicaAcmeContext _db;
         public AsignaRolController(DBClinicaAcmeContext db)
         {
@@ -42,7 +44,44 @@ namespace WebClinica.Controllers
             return listaPagina;
         }
 
-        private void cargarUltimoRegistro()
+        public List<TipoUsuarioPagina> RecuperarPaginas(int tipoUsuarioId)
+        {
+            List<TipoUsuarioPagina> Lista = new List<TipoUsuarioPagina>();
+            Lista = (from tipoUsuarioPagina in _db.TipoUsuarioPagina
+                     where tipoUsuarioPagina.TipoUsuarioId == tipoUsuarioId
+                     orderby tipoUsuarioPagina.PaginaId
+                     select new TipoUsuarioPagina
+                     {
+                         PaginaId = tipoUsuarioPagina.PaginaId,
+                         TipoUsuarioPaginaId = tipoUsuarioPagina.TipoUsuarioPaginaId
+
+                     }).ToList();
+            return Lista;
+        }
+
+        public List<TipoUsuarioPaginas> ListarTipoUsuarioPaginas()
+        {
+            List<TipoUsuarioPaginas> Lista = new List<TipoUsuarioPaginas>();
+            Lista = (from tipoUsuarioPagina in _db.TipoUsuarioPagina
+                     join tipoUsuario in _db.TipoUsuario
+                     on tipoUsuarioPagina.TipoUsuarioId equals tipoUsuario.TipoUsuarioId
+                     join pagina in _db.Pagina
+                     on tipoUsuarioPagina.PaginaId equals pagina.PaginaId
+                     orderby pagina.PaginaId
+                     select new TipoUsuarioPaginas
+                     {
+                         TipoUsuarioPaginaId = tipoUsuarioPagina.TipoUsuarioPaginaId,
+                         PaginaId = tipoUsuarioPagina.PaginaId,
+                         NombrePagina = pagina.Controlador,
+                         TipoUsuarioId = tipoUsuarioPagina.TipoUsuarioId,
+                         NombreTipoUsuario = tipoUsuario.Nombre,
+                         BotonHabilitado = tipoUsuarioPagina.BotonHabilitado
+                     }
+                         ).ToList();
+            return Lista;
+        }
+
+        private void CargarUltimoRegistro()
         {
             var ultimoRegistro = _db.Set<TipoUsuarioPagina>().OrderByDescending(e => e.TipoUsuarioPaginaId).FirstOrDefault();
             if (ultimoRegistro == null)
@@ -55,24 +94,68 @@ namespace WebClinica.Controllers
             }
         }
 
-        public string Registrar(int[] _Paginas, int tipousuarioid)
+        public string Registrar(int[] _PaginasAgregadas, int TipoUsuarioId)
         {
-            cargarUltimoRegistro();
             string rpta = "OK";
-            using (var trans = new TransactionScope())
-
+            int encontrado;
+            foreach (var item in _PaginasAgregadas)
             {
-                foreach (var item in _Paginas)
+                encontrado = 1;
+                for (var i = 0; i < RecuperarPaginas(TipoUsuarioId).Count && encontrado == 1; i++)
                 {
-                    TipoUsuarioPagina _TipoUsuarioPagina = new TipoUsuarioPagina();
-                    _TipoUsuarioPagina.TipoUsuarioPaginaId = ViewBag.ID;
-                    _TipoUsuarioPagina.TipoUsuarioId = tipousuarioid;
-                    _TipoUsuarioPagina.PaginaId = item;
-                    _TipoUsuarioPagina.BotonHabilitado = 1;
-                    _db.TipoUsuarioPagina.Add(_TipoUsuarioPagina);
+                    if (item == RecuperarPaginas(TipoUsuarioId)[i].PaginaId)
+                    {
+                        encontrado = 1;
+                    }
+                    else
+                    {
+                        encontrado = 0;
+                    }
                 }
-                _db.SaveChanges();
-                trans.Complete();
+                if (encontrado == 1)
+                {
+
+                }
+                else
+                {
+                    CargarUltimoRegistro();
+                    TipoUsuarioPagina _TipoUsuarioPagina = new TipoUsuarioPagina()
+                    {
+                        TipoUsuarioPaginaId = ViewBag.ID,
+                        TipoUsuarioId = TipoUsuarioId,
+                        PaginaId = item,
+                        BotonHabilitado = 1
+                    };
+                    _db.TipoUsuarioPagina.Add(_TipoUsuarioPagina);
+                    _db.SaveChanges();
+                }
+            }
+            return rpta;
+        }
+
+        public string Delete(int[] _PaginasEliminadas, int TipoUsuarioId)
+        {
+            string rpta = "OK";
+            var Error = "";
+            try
+            {
+                foreach (var item in _PaginasEliminadas)
+                {
+                    foreach (var items in RecuperarPaginas(TipoUsuarioId))
+                    {
+                        if (item == items.PaginaId)
+                        {
+                            TipoUsuarioPagina tipoUsuarioPagina = _db.TipoUsuarioPagina
+                                .Where(e => e.TipoUsuarioPaginaId == items.TipoUsuarioPaginaId).First();
+                            _db.TipoUsuarioPagina.Remove(tipoUsuarioPagina);
+                            _db.SaveChanges();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Error = ex.Message;
             }
             return rpta;
         }
@@ -100,9 +183,10 @@ namespace WebClinica.Controllers
             return View(listaTipoUsuario);
         }
 
-        public IActionResult Listar(int? id)
+        public IActionResult Listar(int id)
         {
             CargarPaginas();
+
             TipoUsuario _TipoUsuario = _db.TipoUsuario
             .Where(p => p.TipoUsuarioId == id).FirstOrDefault();
 

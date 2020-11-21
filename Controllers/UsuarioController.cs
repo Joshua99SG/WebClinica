@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Clinica.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebClinica.Filter;
@@ -124,13 +125,21 @@ namespace WebClinica.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            cargarTipoUsuarios();
-            int recCount = _db.Usuario.Count(e => e.UsuarioId == id);
-            Usuario _usuario = (from u in _db.Usuario
-                                where u.UsuarioId == id
-                                select u).DefaultIfEmpty().Single();
-            _usuario.Password = Utilitarios.DescifrarDatos(_usuario.Password);
-            return View(_usuario);
+            int UsuarioId = Int32.Parse(HttpContext.Session.GetString("UsuarioId"));
+            if (UsuarioId == id)
+            {
+                cargarTipoUsuarios();
+                int recCount = _db.Usuario.Count(e => e.UsuarioId == id);
+                Usuario _usuario = (from u in _db.Usuario
+                                    where u.UsuarioId == id
+                                    select u).DefaultIfEmpty().Single();
+                _usuario.Password = Utilitarios.DescifrarDatos(_usuario.Password);
+                return View(_usuario);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
 
         [HttpPost]
