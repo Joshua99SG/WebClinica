@@ -117,26 +117,55 @@ function recuperar(tipoUsuarioid) {
     });
 }
 /*--------------------Asigna Roles--------------------*/
+/*--------------------Login-SingIn--------------------*/
+(function ($) {
+    "use strict";
+    /*==================================================================
+    [ Show pass ]*/
+    var showPass = 0;
+    $('.btn-show-pass').on('click', function () {
+        if (showPass == 0) {
+            $(this).next('input').attr('type', 'text');
+            $(this).find('i').removeClass('fa-eye');
+            $(this).find('i').addClass('fa-eye-slash');
+            showPass = 1;
+        }
+        else {
+            $(this).next('input').attr('type', 'password');
+            $(this).find('i').removeClass('fa-eye-slash');
+            $(this).find('i').addClass('fa-eye');
+            showPass = 0;
+        }
 
+    });
+
+
+})(jQuery);
+/*--------------------Login-SingIn--------------------*/
 /*--------------------LOGIN-SingIn--------------------*/
 
 function Login() {
     var user = document.getElementById("name").value;
     var pass = document.getElementById("password").value;
-    $.ajax({
-        type: "GET",
-        url: "/Login/_Login",
-        data: { "user": user, "pass": pass },
-        success: function (data) {
-            if (data == "") {
-                error("Usuario o contraseña incorrecto!");
-            } else {
-                correcto("Bienvenido!")
-                document.location.href = "/Home/Index"
-            }
-        },
-        error: "Esta mierda no sirve"
-    })
+    if (user == "" && pass == "") {
+        error("Debe llenar ambos campos")
+        error
+    } else {
+        $.ajax({
+            type: "GET",
+            url: "/Login/_Login",
+            data: { "user": user, "pass": pass },
+            success: function (data) {
+                if (data == "") {
+                    error("Usuario o contraseña incorrecto!");
+                } else {
+                    correcto("Bienvenido!")
+                    document.location.href = "/Home/Index"
+                }
+            },
+            error: "Esta mierda no sirve"
+        })
+    }
 };
 
 function KeyUpEnterLogin() {
@@ -175,25 +204,6 @@ function SingIn() {
         error: "Ah sucedido un error, intenta de nuevo"
     })
 };
-
-var button = document.getElementById('mainButton');
-
-var openForm = function () {
-    button.className = 'active';
-};
-
-var checkInput = function (input) {
-    if (input.value.length > 0) {
-        input.className = 'active';
-    } else {
-        input.className = '';
-    }
-};
-
-var closeForm = function () {
-    button.className = '';
-};
-
 /*--------------------LOGIN-SingIn--------------------*/
 /*--------------------MODALES CREAR--------------------*/
 
