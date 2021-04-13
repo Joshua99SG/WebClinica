@@ -178,7 +178,7 @@ namespace WebClinica.Controllers
                 ViewBag.Descripcion = oTipoUsuario.Descripcion;
                 ViewBag.TipoUsuarioId = oTipoUsuario.TipoUsuarioId;
             }
-
+            CargarUsuario();
             lista = listaTipoUsuario;
             return View(listaTipoUsuario);
         }
@@ -194,6 +194,11 @@ namespace WebClinica.Controllers
             ViewBag.Usuario = _TipoUsuario.Nombre;
             ViewBag.Descripcion = _TipoUsuario.Descripcion;
             return View(listaPagina);
+        }
+
+        public void CargarUsuario()
+        {
+            ViewBag.Usuario = HttpContext.Session.GetString("nombreUsuario");
         }
     }
 }

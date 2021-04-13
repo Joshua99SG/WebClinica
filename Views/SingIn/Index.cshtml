@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Content.cshtml";
+    List<SelectListItem> Lista = ViewBag.ListaTipoUsuario;
+}
+
+<link href='https://fonts.googleapis.com/css?family=Raleway:400,500,300' rel='stylesheet' type='text/css'>
+<form class="bodylogin" asp-controller="Singin" method="post" id="viewLogin">
+    <div id="mainButton">
+        <div class="btn-text" onclick="openForm()">Crear usuario</div>
+        <div class="modal">
+            <div class="close-button" onclick="closeForm()">x</div>
+            <div class="form-title">Crear usuario</div>
+            <div class="input-group">
+                <input type="text" id="id" name="txtId" value="" onblur="checkInput(this)" />
+                <label for="id">Id Usuario</label>
+            </div>
+            <div class="input-group">
+                <input type="text" id="name" name="txtUser" value="" onblur="checkInput(this)" />
+                <label for="name">Nombre de usuario</label>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" value="" onblur="checkInput(this)" />
+                <label for="password">Contraseña</label>
+            </div>
+            <div class="input-group">
+                <label for="TipoUsuario">Tipos Usuarios:</label>
+                <select class="form-control" id="TipoUsuario" asp-items="@Lista"></select>
+            </div>
+            <a class="form-button" onclick="SingIn()">Crear Usuario</a>
+        </div>
+    </div>
+</form>
+

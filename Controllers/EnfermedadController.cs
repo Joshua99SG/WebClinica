@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Clinica.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebClinica.Filter;
 using WebClinica.Models;
@@ -29,6 +30,7 @@ namespace WebClinica.Controllers
                                    Nombre = enfermedad.Nombre,
                                    Descripcion = enfermedad.Descripcion.Substring(0, 85) + "..."
                                }).ToList();
+            CargarUsuario();
             var model = listaEnfermedad;
             return View("Index", model);
         }
@@ -136,5 +138,12 @@ namespace WebClinica.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        public void CargarUsuario()
+        {
+            ViewBag.Usuario = HttpContext.Session.GetString("nombreUsuario");
+        }
+
+
     }
 }

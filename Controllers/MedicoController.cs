@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Clinica.Models;
 using WebClinica.Filter;
+using Microsoft.AspNetCore.Http;
 
 namespace WebClinica.Controllers
 {
@@ -97,6 +98,7 @@ namespace WebClinica.Controllers
 
         public IActionResult Index()
         {
+            CargarUsuario();
             listaMedico = BuscarMedicoEspecialidad("");
             return View(listaMedico);
         }
@@ -203,6 +205,11 @@ namespace WebClinica.Controllers
                 Error = ex.Message;
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public void CargarUsuario()
+        {
+            ViewBag.Usuario = HttpContext.Session.GetString("nombreUsuario");
         }
     }
 }

@@ -1,110 +1,119 @@
-﻿.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
-    vertical-align: middle !important;
-}
-
-#agregar {
-    border-color: transparent;
-    background-color: #007f7e;
-}
-
-    #agregar:hover {
-        border-color:transparent;
-        background-color: #4267b2;
-    }
-
-#regresar {
-    border-color:transparent;
-}
-
-    #regresar:hover {
-        border-color:transparent;
-        background-color: #4267b2;
-    }
-
-#tituloEspecialidad {
-    text-align: center;
-}
-
-.crear {
-    border: none;
+﻿/*----------Login----------*/
+.limiter {
     width: 100%;
-    height: 100%;
-    padding: 6px;
-    background-color: #007f7e;
+    margin: 0 auto;
 }
 
-    .crear:hover {
-        background-color: #4267b2;
-    }
-
-.inicio {
+.container-login100 {
     width: 100%;
-    height: 100%;
-    padding: 6px;
-}
-
-    .inicio:hover {
-        background-color: #4267b2;
-    }
-
-.regresarIndexEspecialidad {
-    background-color: #007f7e;
-}
-    .regresarIndexEspecialidad:hover {
-        background-color: #4267b2;
-    }
-
-.contenedorBotonesPrincipalesIndex{
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background-color: #ebebeb;
 }
 
-.contenedorCrear {
-    margin-top: 25px;
-    display: flex;
-}
-
-.boton-delete {
-    background-color: white;
-    border: none;
-    background-color: transparent;
-}
-
-    .boton-delete:hover {
-        background-color: rgba(199, 199, 199, 1);
-    }
-
-.boton-list {
-    background-color: white;
-    border: none;
-    background-color: transparent;
-}
-
-    .boton-list:hover {
-        background-color: rgba(199, 199, 199, 1);
-    }
-
-.boton-edit {
-    background-color: white;
-    border: none;
-    background-color: transparent;
-}
-
-    .boton-edit:hover {
-        background-color: rgba(199, 199, 199, 1);
-    }
-
-.contenedorTablas {
-    background-color: white;
-    padding: 10px;
+.wrap-login100 {
+    width: 560px;
+    background: #fff;
     border-radius: 10px;
-    border: 1px solid #ddd;
-    margin-top:20px;
+    position: relative;
 }
 
-.trs {
-    background-color: #111110;
-    color: white;
+.p-l-85 {
+    padding-left: 85px;
 }
+
+.p-r-85 {
+    padding-right: 85px;
+}
+
+.p-t-55 {
+    padding-top: 55px;
+}
+
+.p-b-55 {
+    padding-bottom: 55px;
+}
+
+.login100-form {
+    width: 100%;
+}
+
+.flex-sb {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.flex-w {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    -o-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.login100-form-title {
+    font-family: Raleway-Medium;
+    font-size: 30px;
+    color: #555555;
+    line-height: 1.2;
+    text-transform: uppercase;
+    text-align: left;
+    width: 100%;
+    display: block;
+}
+
+.p-b-32 {
+    padding-bottom: 32px;
+}
+
+.txt1 {
+    font-family: Raleway-SemiBold;
+    font-size: 13px;
+    color: #555555;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+.p-b-11 {
+    padding-bottom: 11px;
+}
+
+.wrap-input100 {
+    width: 100%;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 2px;
+}
+
+.validate-input {
+    position: relative;
+}
+
+.m-b-36 {
+    margin-bottom: 36px;
+}
+
+
+/*----------Login----------*/
 
 /* CSS Login*/
 *, *:before, *:after {
@@ -334,6 +343,114 @@
     letter-spacing: initial;
 }
 /* CSS Login*/
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+    vertical-align: middle !important;
+}
+
+#agregar {
+    border-color: transparent;
+    background-color: #007f7e;
+}
+
+    #agregar:hover {
+        border-color:transparent;
+        background-color: #4267b2;
+    }
+
+#regresar {
+    border-color:transparent;
+}
+
+    #regresar:hover {
+        border-color:transparent;
+        background-color: #4267b2;
+    }
+
+#tituloEspecialidad {
+    text-align: center;
+}
+
+.crear {
+    border: none;
+    width: 100%;
+    height: 100%;
+    padding: 6px;
+    background-color: #007f7e;
+}
+
+    .crear:hover {
+        background-color: #4267b2;
+    }
+
+.inicio {
+    width: 100%;
+    height: 100%;
+    padding: 6px;
+}
+
+    .inicio:hover {
+        background-color: #4267b2;
+    }
+
+.regresarIndexEspecialidad {
+    background-color: #007f7e;
+}
+    .regresarIndexEspecialidad:hover {
+        background-color: #4267b2;
+    }
+
+.contenedorBotonesPrincipalesIndex{
+    display: flex;
+}
+
+.contenedorCrear {
+    margin-top: 25px;
+    display: flex;
+}
+
+.boton-delete {
+    background-color: white;
+    border: none;
+    background-color: transparent;
+}
+
+    .boton-delete:hover {
+        background-color: rgba(199, 199, 199, 1);
+    }
+
+.boton-list {
+    background-color: white;
+    border: none;
+    background-color: transparent;
+}
+
+    .boton-list:hover {
+        background-color: rgba(199, 199, 199, 1);
+    }
+
+.boton-edit {
+    background-color: white;
+    border: none;
+    background-color: transparent;
+}
+
+    .boton-edit:hover {
+        background-color: rgba(199, 199, 199, 1);
+    }
+
+.contenedorTablas {
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-top:20px;
+}
+
+.trs {
+    background-color: #111110;
+    color: white;
+}
 
 /*CREATES*/
 .contenedorPrincipalCreate {

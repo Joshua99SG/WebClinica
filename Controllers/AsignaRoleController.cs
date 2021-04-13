@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Clinica.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebClinica.Models;
@@ -168,6 +169,11 @@ namespace WebClinica.Controllers
                                     }).ToList();
             }
             return ListaTipoUsuario;
+        }
+
+        public void CargarUsuario()
+        {
+            ViewBag.Usuario = HttpContext.Session.GetString("nombreUsuario");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿
 using Clinica.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using System;
@@ -29,6 +30,7 @@ namespace WebClinica.Controllers
                                      Nombre = especialidad.Nombre,
                                      Descripcion = especialidad.Descripcion.Substring(0, 85) + "..."  //Cambio
                                  }).ToList();
+            CargarUsuario();
             var model = listaEspecialidad;
             return View("Index", model);
         }
@@ -136,6 +138,11 @@ namespace WebClinica.Controllers
                 Error = ex.Message;
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public void CargarUsuario()
+        {
+            ViewBag.Usuario = HttpContext.Session.GetString("nombreUsuario");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace WebClinica.Controllers
                                  TelefonoContacto = paciente.TelefonoContacto,
 
                              }).ToList();
+            CargarUsuario();
             var model = listaPaciente;
             return View("Index", model);
         }
@@ -111,6 +113,11 @@ namespace WebClinica.Controllers
                 Error = ex.Message;
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public void CargarUsuario()
+        {
+            ViewBag.Usuario = HttpContext.Session.GetString("nombreUsuario");
         }
     }
 }

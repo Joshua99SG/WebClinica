@@ -69,8 +69,40 @@ namespace WebClinica.Controllers
             return _Usuario;
         }
 
+        public void CargarUsuario()
+        {
+            ViewBag.Usuario = HttpContext.Session.GetString("nombreUsuario");
+        }
+
+        public String ValidacionUsuario(int id)
+        {
+            int UsuarioId = Int32.Parse(HttpContext.Session.GetString("UsuarioId"));
+            String TipoUsuarioId = HttpContext.Session.GetString("TipoUsuarioId");
+            String Respuesta;
+            if (TipoUsuarioId.Equals("1"))
+            {
+                Respuesta = "OK";
+                return Respuesta;
+            }
+            else
+            {
+                if (id.Equals(UsuarioId))
+                {
+                    Respuesta = "OK";
+                    return Respuesta;
+                }
+                else
+                {
+                    Respuesta = "No esta autorizado para ver detalles ni hacer cambios a este usuario";
+                    return Respuesta;
+                }
+                
+            }
+        }
+
         public IActionResult Index()
         {
+            CargarUsuario();
             listaUsuario = listarUsuarios();
             return View(listaUsuario);
         }
@@ -125,9 +157,8 @@ namespace WebClinica.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            int UsuarioId = Int32.Parse(HttpContext.Session.GetString("UsuarioId"));
-            if (UsuarioId == id)
-            {
+            //if (ValidacionUsuario(id) == "OK")
+            //{
                 cargarTipoUsuarios();
                 int recCount = _db.Usuario.Count(e => e.UsuarioId == id);
                 Usuario _usuario = (from u in _db.Usuario
@@ -135,11 +166,11 @@ namespace WebClinica.Controllers
                                     select u).DefaultIfEmpty().Single();
                 _usuario.Password = Utilitarios.DescifrarDatos(_usuario.Password);
                 return View(_usuario);
-            }
-            else
-            {
-                return RedirectToAction(nameof(Index));
-            }
+            //}
+            //else
+            //{
+              //  return RedirectToAction(nameof(Index));
+            //}
         }
 
         [HttpPost]
@@ -201,5 +232,7 @@ namespace WebClinica.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+
+        
     }
 }

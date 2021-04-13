@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using WebClinica.Models.ViewModel;
 using WebClinica.Filter;
+using Microsoft.AspNetCore.Http;
 
 namespace WebClinica.Controllers
 {
@@ -143,6 +144,7 @@ namespace WebClinica.Controllers
 
         public IActionResult Index()
         {
+            CargarUsuario();
             listaCitas = listarCitas();
             return View(listaCitas);
         }
@@ -299,6 +301,11 @@ namespace WebClinica.Controllers
                 Error = ex.Message;
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public void CargarUsuario()
+        {
+            ViewBag.Usuario = HttpContext.Session.GetString("nombreUsuario");
         }
     }
 }

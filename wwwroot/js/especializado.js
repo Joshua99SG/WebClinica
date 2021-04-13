@@ -118,9 +118,9 @@ function recuperar(tipoUsuarioid) {
 }
 /*--------------------Asigna Roles--------------------*/
 
-/*--------------------LOGIN--------------------*/
+/*--------------------LOGIN-SingIn--------------------*/
 
-function Enviar() {
+function Login() {
     var user = document.getElementById("name").value;
     var pass = document.getElementById("password").value;
     $.ajax({
@@ -129,13 +129,50 @@ function Enviar() {
         data: { "user": user, "pass": pass },
         success: function (data) {
             if (data == "") {
-                error("Usuario o contaseña incorrecto!");
+                error("Usuario o contraseña incorrecto!");
             } else {
                 correcto("Bienvenido!")
                 document.location.href = "/Home/Index"
             }
         },
         error: "Esta mierda no sirve"
+    })
+};
+
+function KeyUpEnterLogin() {
+    var input = document.getElementById("password");
+
+    input.addEventListener("keyup", function (event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+
+            document.getElementById("Ingresar").click();
+        }
+    });
+};
+
+function AbrirSingIn() {
+    document.location.href = "/SingIn/Index";
+}
+
+function SingIn() {
+    var IdUser = document.getElementById("id").value;
+    var UserName = document.getElementById("name").value;
+    var Password = document.getElementById("password").value;
+    var Usertype = document.getElementById("TipoUsuario").value;
+    $.ajax({
+        type: "GET",
+        url: "/SingIn/_SingIn",
+        data: { "UserId": IdUser, "TipoUsuario": Usertype, "NombreUsuario": UserName, "Password": Password },
+        success: function (data) {
+            if (data == "Ya existe el usuario") {
+                error("Ya existe un usuario registrado con ese ID");
+            } else {
+                correcto("El usuario ha sido creado satisfactoriamente");
+                document.location.href = "/Login/Index"
+            }
+        },
+        error: "Ah sucedido un error, intenta de nuevo"
     })
 };
 
@@ -157,20 +194,7 @@ var closeForm = function () {
     button.className = '';
 };
 
-document.addEventListener("keyup", function (e) {
-    if (e.keyCode == 27 || e.keyCode == 13) {
-        closeForm();
-    }
-});
-
-
-document.addEventListener("keyup", function (e) {
-    if (e.keyCode == 27 || e.keyCode == 13) {
-        closeForm();
-    }
-});
-/*------------------------LOGIN-------------------------*/
-
+/*--------------------LOGIN-SingIn--------------------*/
 /*--------------------MODALES CREAR--------------------*/
 
 function abrirModalCrearEnfermedad() {
@@ -867,6 +891,10 @@ function Buscar() {
 }
 
 /*----------------METODOS GLOBALES MODALES----------------*/
+/*---------------METODOS CONTROLLER USUARIO---------------*/
+
+/*---------------METODOS CONTROLLER USUARIO---------------*/
+
 function Resetear() {
     document.getElementById("nombre").value = "";
     Buscar();

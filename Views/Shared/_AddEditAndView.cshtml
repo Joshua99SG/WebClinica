@@ -1,7 +1,7 @@
 ﻿@model int
 <td style="width:150px">
     <div class="btn-group tabla" id="tabla" role="group">
-        <a class="btn btn-primary text-white boton-edit" asp-action="Edit" asp-route-Id="@Model">
+        <a class="btn btn-primary text-white boton-edit" onclick="ValidarAccesoEditar()" asp-action="Edit" asp-route-Id="@Model" >
             <img src="~/images/editar.png" style="width:20px; border-color:black;" />
         </a>
         <a class="btn btn-success text-white boton-list" asp-action="Details" asp-route-Id="@Model">

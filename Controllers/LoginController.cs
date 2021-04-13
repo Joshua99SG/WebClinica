@@ -13,7 +13,6 @@ namespace Clinica.Controllers
     {
         public IActionResult Index()
         {
-
             return View();
         }
         private readonly DBClinicaAcmeContext _db;
@@ -22,6 +21,7 @@ namespace Clinica.Controllers
         {
             _db = db;
         }
+
         public string _Login(string user, string pass)
         {
             string rpta = "";
@@ -38,7 +38,7 @@ namespace Clinica.Controllers
                             && u.Password == claveCifrada).First();
                     HttpContext.Session.SetString("UsuarioId", User.UsuarioId.ToString());
                     HttpContext.Session.SetString("nombreUsuario", User.Nombre);
-                    //int idTipo = User.TipoUsuarioId;
+                    HttpContext.Session.SetString("TipoUsuarioId", User.TipoUsuarioId.ToString());
                     List<Pagina> lista = new List<Pagina>();
                     lista = (from pgt in _db.TipoUsuarioPagina
                              join pagina in _db.Pagina
@@ -119,9 +119,12 @@ namespace Clinica.Controllers
             }
             return rpta;
         }
+
         public ActionResult CerrarSesion()
         {
-            HttpContext.Session.Remove("usuarioId");
+            HttpContext.Session.Remove("UsuarioId");
+            HttpContext.Session.Remove("nombreUsuario");
+            HttpContext.Session.Remove("TipoUsuarioId");
             return RedirectToAction("Index");
         }
     }

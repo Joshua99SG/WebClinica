@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Clinica.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebClinica.Filter;
 using WebClinica.Models;
@@ -50,6 +51,7 @@ namespace Clinica.Controllers
 
         public IActionResult Index()
         {
+            CargarUsuario();
             listaTipoUsuarios = listarTipoUsuarios();
             return View(listaTipoUsuarios);
         }
@@ -165,6 +167,11 @@ namespace Clinica.Controllers
                 Error = ex.Message;
             }
             return RedirectToAction(nameof(Index));
+        }
+
+        public void CargarUsuario()
+        {
+            ViewBag.Usuario = HttpContext.Session.GetString("nombreUsuario");
         }
     }
 }
