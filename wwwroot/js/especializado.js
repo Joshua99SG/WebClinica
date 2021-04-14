@@ -185,10 +185,10 @@ function AbrirSingIn() {
 }
 
 function SingIn() {
-    var IdUser = document.getElementById("id").value;
+    var IdUser = document.getElementById("Cedula").value;
     var UserName = document.getElementById("name").value;
     var Password = document.getElementById("password").value;
-    var Usertype = document.getElementById("TipoUsuario").value;
+    var Usertype = 5;
     $.ajax({
         type: "GET",
         url: "/SingIn/_SingIn",
