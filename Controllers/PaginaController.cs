@@ -16,27 +16,54 @@ namespace Clinica.Controllers
     public class PaginaController : Controller
     {
         private readonly DBClinicaAcmeContext _db;
-        public static List<Pagina> lista;
+        List<Pagina> listaPagina = new List<Pagina>();
         private List<MenuController> ListaMenu = new List<MenuController>();
         public PaginaController(DBClinicaAcmeContext db)
         {
             _db = db;
         }
+
         private void CargarMenus()
         {
-            var list = new SelectList(
-                new[]{
-                    new{ID="1",Name="Mantenimiento"},
-                    new{ID="2",Name="Consultas"},
-                    new{ID="3",Name="Accesibilidad"},
-                    new{ID="4",Name="Citas"},
-                            }, "ID", "Name", 1);
-            ViewBag.ListaMenu = list;
+            List<SelectListItem> listaMenus = new List<SelectListItem>();
+            listaMenus.Add(new SelectListItem { Text = "Mantenimiento", Value = "1" });
+            listaMenus.Add(new SelectListItem { Text = "Consultas", Value = "2" });
+            listaMenus.Add(new SelectListItem { Text = "Accesibilidad", Value = "3" });
+            listaMenus.Add(new SelectListItem { Text = "Citas", Value = "4" });
+            ViewBag.ListaMenu = listaMenus;
+        }
+
+        private void CargarControlador()
+        {
+            List<SelectListItem> listaControlador = new List<SelectListItem>();
+            listaControlador.Add(new SelectListItem { Text = "AsignaRol", Value = "1" });
+            listaControlador.Add(new SelectListItem { Text = "Citas", Value = "2" });
+            listaControlador.Add(new SelectListItem { Text = "Enfermedad", Value = "3" });
+            listaControlador.Add(new SelectListItem { Text = "Especilidad", Value = "4" });
+            listaControlador.Add(new SelectListItem { Text = "Medico", Value = "5" });
+            listaControlador.Add(new SelectListItem { Text = "Paciente", Value = "6" });
+            listaControlador.Add(new SelectListItem { Text = "Pagina", Value = "7" });
+            listaControlador.Add(new SelectListItem { Text = "TipoUsuarios", Value = "8" });
+            listaControlador.Add(new SelectListItem { Text = "Usuario", Value = "9" });
+            listaControlador.Add(new SelectListItem { Text = "ConsultaCitas", Value = "10" });
+            listaControlador.Add(new SelectListItem { Text = "ConsultaEnfermedad", Value = "11" });
+            listaControlador.Add(new SelectListItem { Text = "ConsultaEspecialidad", Value = "12" });
+            listaControlador.Add(new SelectListItem { Text = "ConsultaMedico", Value = "13" });
+            listaControlador.Add(new SelectListItem { Text = "ConsultaPacientes", Value = "14" });
+            listaControlador.Add(new SelectListItem { Text = "ConsultaUsuario", Value = "15" });
+            ViewBag.ListaControlador = listaControlador;
         }
         /*CRUD*/
-        private void CargarUltimoRegistro()
+        public void CargarUltimoRegistro()
         {
-            var ultimoRegistro = _db.Set<Pagina>().OrderByDescending(e => e.PaginaId).FirstOrDefault();
+            listaPagina = (from pagina in _db.Pagina
+                           select new Pagina
+                           {
+                               PaginaId = pagina.PaginaId,
+                               Menu = pagina.Menu,
+                               Controlador = pagina.Controlador
+                           }).ToList();
+            var ultimoRegistro = listaPagina.OrderByDescending(e => e.PaginaId).FirstOrDefault();
             if (ultimoRegistro == null)
             {
                 ViewBag.ID = 1;
@@ -51,8 +78,9 @@ namespace Clinica.Controllers
         public IActionResult Create()
         {
 
-            CargarMenus();
             CargarUltimoRegistro();
+            CargarMenus();
+            CargarControlador();
             return View();
         }
 

@@ -196,8 +196,10 @@ namespace WebClinica.Models
 
             modelBuilder.Entity<Pagina>(entity =>
             {
+                entity.HasKey(e => e.PaginaId);
                 entity.Property(e => e.PaginaId)
-                    .HasColumnName("PaginaId");
+                    .HasColumnName("PaginaId")
+                    .ValueGeneratedNever(); ;
 
                 entity.Property(e => e.Accion)
                     .HasColumnName("Accion")

@@ -773,36 +773,49 @@ function BuscarMedico() {
 /*---------------------METODOS BUSCAR---------------------*/
 /*----------------METODOS GLOBALES MODALES----------------*/
 function Agregar() {
+    var continuar = true;
     let titulo = document.title;
-    if (titulo == "Agregar especialidad") {
-        abrirModalCrearEspecialidad();
-    } else {
-        if (titulo == "Agregar medico") {
-            abrirModalCrearMedico();
-        } else {
-            if (titulo == "Agregar paciente") {
+    while (continuar) {
+        switch (titulo) {
+            case "Agregar especialidad":
+                abrirModalCrearEspecialidad();
+                continuar = false;
+                break;
+
+            case "Agregar medico":
+                abrirModalCrearMedico();
+                continuar = false;
+                break;
+
+            case "Agregar paciente":
                 abrirModalCrearPaciente();
-            } else {
-                if (titulo == "Agregar enfermedad") {
-                    abrirModalCrearEnfermedad();
-                } else {
-                    if (titulo == "Agregar usuario") {
-                        abrirModalCrearUsuario();
-                    } else {
-                        if (titulo == "Agregar citas") {
-                            abrirModalCrearCita();
-                        } else {
-                            if (titulo == "Agregar tipo Usuario") {
-                                abrirModalCrearTipoUsuario();
-                            } else {
-                                if (titulo == "Agregar pagina") {
-                                    abrirModalCrearPagina();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+                continuar = false;
+                break;
+
+            case "Agregar enfermedad":
+                abrirModalCrearEnfermedad();
+                continuar = false;
+                break;
+
+            case "Agregar usuario":
+                abrirModalCrearUsuario();
+                continuar = false;
+                break;
+
+            case "Agregar citas":
+                abrirModalCrearCita();
+                continuar = false;
+                break;
+
+            case "Agregar tipo Usuario":
+                abrirModalCrearTipoUsuario();
+                continuar = false;
+                break;
+
+            case "Agregar pagina":
+                abrirModalCrearPagina();
+                continuar = false;
+                break;
         }
     }
 }
