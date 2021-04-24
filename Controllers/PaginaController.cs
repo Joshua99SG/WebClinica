@@ -103,7 +103,7 @@ namespace Clinica.Controllers
                         PaginaId = ViewBag.ID,
                         Menu = pagina.Menu,
                         BotonHabilitado = 1,
-                        Accion = pagina.Accion,
+                        Accion = "Index",
                         Controlador = pagina.Controlador,
                     };
 
