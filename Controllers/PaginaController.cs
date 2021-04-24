@@ -28,8 +28,8 @@ namespace Clinica.Controllers
                 new[]{
                     new{ID="1",Name="Mantenimiento"},
                     new{ID="2",Name="Consultas"},
-                    new{ID="3",Name="Citas"},
-                    new{ID="4",Name="Accesibilidad"},
+                    new{ID="3",Name="Accesibilidad"},
+                    new{ID="4",Name="Citas"},
                             }, "ID", "Name", 1);
             ViewBag.ListaMenu = list;
         }

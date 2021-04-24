@@ -97,11 +97,10 @@ namespace WebClinica.Controllers
         public string Registrar(int[] _PaginasAgregadas, int TipoUsuarioId)
         {
             string rpta = "OK";
-            int encontrado;
+            int encontrado =0;
             foreach (var item in _PaginasAgregadas)
             {
-                encontrado = 1;
-                for (var i = 0; i < RecuperarPaginas(TipoUsuarioId).Count && encontrado == 1; i++)
+                for (var i = 0; i != RecuperarPaginas(TipoUsuarioId).Count; i++)
                 {
                     if (item == RecuperarPaginas(TipoUsuarioId)[i].PaginaId)
                     {
